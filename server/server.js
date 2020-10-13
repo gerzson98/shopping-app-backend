@@ -1,19 +1,15 @@
 'use strict'
 
-const { server } = require('../config/config')
 const connectToDB = require('./mongoDB')
+const { server } = require('../config/config')
 const { attachRoutes } = require('../api/attachRoutes')
 
 const express = require('express')
 const app = express()
 
-
-/**
- * todo(Bence): after config created normally we need to replace it with async
- */
-
 const start = async function (app) {
   const port = server.port
+  if(!port) return new Error('[ERROR] | port nr. cannot be imorted |')
   try {
     await connectToDB()
   } catch (error) {
