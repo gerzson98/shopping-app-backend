@@ -1,9 +1,9 @@
 module.exports = {
   database: {
-    host: null,
-    connectionString: null
+    mongoURL: null
   },
   server: {
     port: 5000
   }
 }
+
