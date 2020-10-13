@@ -1,0 +1,31 @@
+{
+  "name": "shopping-app-backend",
+  "version": "0.0.1",
+  "description": "basic shopping list app's backend in nodejs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node ./server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bencebt/shopping-app-backend.git"
+  },
+  "keywords": [
+    "REST",
+    "API"
+  ],
+  "author": "Bence Markus, Gergely Varga",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bencebt/shopping-app-backend/issues"
+  },
+  "homepage": "https://github.com/Bencebt/shopping-app-backend#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^7.11.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.9"
+  }
+}
