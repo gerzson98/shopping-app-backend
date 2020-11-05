@@ -1,0 +1,28 @@
+
+* {
+  margin: 10px;
+}
+div {
+  background-color: lightgreen;
+}
+
+label {
+  color: black;
+}
+
+input {
+  background-color: lightgrey;
+}
+
+button {
+  border: 2px solid blue;
+  border-radius: 4px;
+}
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}

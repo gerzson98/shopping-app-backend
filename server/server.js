@@ -1,24 +1,16 @@
 'use strict'
 
-const connectToDB = require('./mongoDB')
+const cors = require('cors');
+const express = require('express');
 const { server } = require('../config/config')
 const { attachRoutes } = require('../api/attachRoutes')
 
-const express = require('express')
 const app = express()
+const port = server.port
 
-const start = async function (app) {
-  const port = server.port
-  if(!port) return new Error('[ERROR] | port nr. cannot be imorted |')
-  try {
-    await connectToDB()
-  } catch (error) {
-    console.log(error)
-  }
-  app.use(express.json())
-  attachRoutes(app).listen(port, () => {
-    console.info(`Server running on ${port}`)
-  })
-}
+app.use(cors())
+app.use(express.json())
 
-start(app)
+attachRoutes(app).listen(port, () => {
+  console.log(`Server started on port:${port}`)
+})
