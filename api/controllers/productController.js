@@ -2,6 +2,7 @@
 
 const asyncHelper = require('../middleware/async')
 const { ProductFunctions } = require('../../functions/ProductFunctions')
+//const { response } = require('express')
 
 exports.getAllProduct = asyncHelper(async (request, response) => {
   const productFunctions = new ProductFunctions()

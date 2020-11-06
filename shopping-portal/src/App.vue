@@ -12,6 +12,10 @@
       <div v-for="i in inputLinesQuantity" :key="i">
         <input v-model="inputName[i]" placeholder="Product name" />
         <input v-model="inputTrademark[i]" placeholder="Trademark's name" />
+        <input v-model="inputLocation[i]" placeholder="Location" />
+        <input v-model="inputPrice[i]" placeholder="Price" />
+        <input v-model="inputUnitSize[i]" placeholder="Unit size" />
+        <input v-model="inputUnitType[i]" placeholder="Unit type" />
         <input v-model="inputQuantity[i]" placeholder="Pieces" />
       </div>
       <div>
@@ -30,7 +34,8 @@
 <script>
 import axios from 'axios'
 const API_URL_READ = 'http://localhost:5000/product/getall'
-const API_URL_ADD_PRODUCT = 'http://localhost:5000/product/addproduct'
+// const API_URL_ADD_PRODUCT = 'http://localhost:5000/product/addproduct'
+const API_URL_ADD_SHOPPING = 'http://localhost:5000/purchases/addshopping'
 
 export default {
   name: 'App',
@@ -38,12 +43,20 @@ export default {
     return {
       inputName: [],
       inputTrademark: [],
+      inputLocation: [],
+      inputPrice: [],
+      inputUnitSize: [],
+      inputUnitType: [],
       inputQuantity: [],
       forceReRenderKey: 0,
       inputLinesQuantity: 5,
       dataToSend: [{
         name: 'testName',
         trademark: 'testTrademark',
+        location: 'CBA',
+        price: 100,
+        unitSize: 500,
+        unitType: 'ml',
         quantity: 1
       }],
       products: []
@@ -59,7 +72,11 @@ export default {
       this.dataToSend.push({
         name: this.inputName[i],
         trademark: this.inputTrademark[i],
-        quantity: this.inputQuantity
+        location: this.inputLocation[i],
+        price: this.inputPrice[i],
+        unitsize: this.inputUnitSize[i],
+        unitType: this.inputUnitType[i],
+        quantity: this.inputQuantity[i]
       })
     },
     async SendRequest () {
@@ -70,7 +87,7 @@ export default {
       for (var i = 1; i <= inputLinesQuantity; ++i) {
         this.inputAdder(i)
       }
-      await axios.post(API_URL_ADD_PRODUCT, {
+      await axios.post(API_URL_ADD_SHOPPING, {
         jsonData: JSON.stringify(this.dataToSend)
       })
     },

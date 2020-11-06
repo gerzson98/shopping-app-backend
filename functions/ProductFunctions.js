@@ -52,28 +52,24 @@ class ProductFunctions{
   }
   
   async upLoadProduct(data){
-
-    data.foreach(element => {
-      const querySearch = `SELECT * FROM products WHERE name = '${element.name}' AND trademark = '${element.trademark}'`
-      if(!element.quantity){
-        element.quantity = 1
+    if(!data.quantity){
+      data.quantity = 1
+    }
+    try{
+      const result = await this.getProductID(data.name, data.trademark)
+      if(!result){
+        return await this.addProduct(data.name, data.trademark, data.quantity)
       }
-      try{
-        const result = await db().query(querySearch)
-        if(!result){
-          await this.addProduct(element.name, element.trademark, element.quantity)
-        }
-        else{
-          await this.incrementPurchases(element.name, element.trademark, element.quantity)
-        }
+      else{
+        return await this.incrementPurchases(data.name, data.trademark, data.quantity)
       }
-      catch(err) {
-        console.log(err)
-      }
-      finally{
-        db().close()
-      }
-    })
+    }
+    catch(err) {
+      return new Error(err)
+    }
+    finally{
+      db().close()
+    }
   }
 
   // async getProductByName(name){
@@ -91,18 +87,18 @@ class ProductFunctions{
   //   }
   // }
 
-  // async getProductID(name, trademark){
-  //   const queryString = `SELECT product_id FROM products WHERE name = '${name}' AND trademark = '${trademark}'`
-  //   try{
-  //     return await db().query(queryString)
-  //   }
-  //   catch(err){
-  //     return new Error(err)
-  //   }
-  //   finally{
-  //     db().close()
-  //   }
-  // }
+  async getProductID(name, trademark){
+    const queryString = `SELECT product_id FROM products WHERE name = '${name}' AND trademark = '${trademark}'`
+    try{
+      return await db().query(queryString)
+    }
+    catch(err){
+      return new Error(err)
+    }
+    finally{
+      db().close()
+    }
+  }
 }
 
 
