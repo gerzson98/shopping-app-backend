@@ -3,17 +3,29 @@
 const asyncHelper = require('../middleware/async')
 const { PurchaseFunctions } = require('../../functions/PurchaseFunctions')
 const { ProductFunctions } = require('../../functions/ProductFunctions')
+const { ConvertFunctions } = require('../../functions/Convert')
 
-// Kéne ide egy olyan importot megoldani a product controllerböl, hogy csak a relevansakat töltse be.
 exports.addNewShopping = asyncHelper((request, response) => {
   const purchaseFunctions = new PurchaseFunctions()
   const productFunctions = new ProductFunctions()
+  const convert = new ConvertFunctions()
   const date = new Date(Date.now()).toISOString()
-  request.foreach(async (element) => {
-    const product_id = await productFunctions.upLoadProduct(element.body.name, element.body.trademark, element.body.purchases)
-    await purchaseFunctions.addNewShopping(product_id, element.body, date)
-  });
+  const data = request.body
+  if (Array.isArray(data)) {
+    data.forEach(async function (element) {
+      const result = await productFunctions.upLoadProduct(element.name, element.trademark, element.quantity)
+      const product_id = convert.resultToObject(result)[0].product_id
+      await purchaseFunctions.addNewShopping(product_id, element.location, element.price, element.unitType, element.unitSize, element.quantity, date)
+    })
+  }
   response.status(200)
 })
+
+exports.getAllPurchases = asyncHelper(async (request, response) => {
+  const purchaseFunctions = new PurchaseFunctions()
+  const result = await purchaseFunctions.getAllPurchases()
+  response.status(200).json(result)
+})
+
 
 

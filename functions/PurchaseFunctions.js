@@ -8,13 +8,27 @@ const {db} = require('../server/db')
  */
 
 class PurchaseFunctions{
-  async addNewShopping(product_id, data, date){
+  async addNewShopping(product_id, location, price, unitType, unitSize, quantity, date){
     try{
-      const queryStringAddPurchase = `INSERT INTO purchases (product_id, location, price, unit_size, unit_type, purchases, date) values(${product_id}, '${data.location}', ${data.price}, ${data.unitSize}, '${data.unitType}', ${data.quantity},  ${date.body})`
-      await db().query(queryStringAddPurchase)
+      const queryStringAddPurchase = `INSERT INTO purchases (product_id, location, price, unit_size, unit_type, quantity, date) VALUES('${product_id}', '${location}', '${price}', '${unitSize}', '${unitType}', '${quantity}',  '${date}');`
+      return await db().query(queryStringAddPurchase)
     }
     catch(err){
-      return new Error(err)
+      return err
+    }
+    finally{
+      db().close()
+    }
+  }
+
+  async getAllPurchases(){
+    const queryString = 'SELECT * FROM shopping_app.purchases;'
+    try{
+      const result = await db().query(queryString)
+      return result
+    }
+    catch(err){
+      return new Error(err) 
     }
     finally{
       db().close()

@@ -9,47 +9,46 @@
         <br>
         <br>
       </div>
-      <div v-for="i in inputLinesQuantity" :key="i">
-        <input v-model="inputName[i]" placeholder="Product name" />
-        <input v-model="inputTrademark[i]" placeholder="Trademark's name" />
-        <input v-model="inputLocation[i]" placeholder="Location" />
-        <input v-model="inputPrice[i]" placeholder="Price" />
-        <input v-model="inputUnitSize[i]" placeholder="Unit size" />
-        <input v-model="inputUnitType[i]" placeholder="Unit type" />
-        <input v-model="inputQuantity[i]" placeholder="Pieces" />
+      <div v-for="item in dataToSend" :key="item">
+        <input v-model="item.name" placeholder="Product name" />
+        <input v-model="item.trademark" placeholder="Trademark's name" />
+        <input v-model="item.location" placeholder="Location" />
+        <input v-model="item.price" placeholder="Price" />
+        <input v-model="item.unitSize" placeholder="Unit size" />
+        <input v-model="item.unitType" placeholder="Unit type" />
+        <input v-model="item.quantity" placeholder="Pieces" />
       </div>
       <div>
-        <button @click="SendUpdate(inputLinesQuantity)">Submit</button>
+        <button @click="SendUpdate()">Submit</button>
       </div>
       <div>
-        <button @click="SendRequest()">Let's see what we have so far</button>
+        <button @click="sendRequestProducts()">Let's see what products we have</button>
+      </div>
+      <div>
+        <button @click="sendRequestPurchases()">Let's see what purchases we have</button>
       </div>
 
       <div v-for="item in products" :key="item.product_id">
         <p>Termék: {{ item.name }} Márkája: {{ item.trademark }} Eddig összesen vásárolva: {{ item.purchases }} db</p>
+      </div>
+      <div v-for="item in purchases" :key="item">
+        <p>relevant ID: {{item.product_id }} location: {{ item.location }} price: {{ item.price }} date: {{ item.date }}</p>
       </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-const API_URL_READ = 'http://localhost:5000/product/getall'
-// const API_URL_ADD_PRODUCT = 'http://localhost:5000/product/addproduct'
+const API_URL_READ = 'http://localhost:5000/product/getallproducts'
+const API_URL_GETALLPURCHASES = 'http://localhost:5000/purchases/getallpurchases'
 const API_URL_ADD_SHOPPING = 'http://localhost:5000/purchases/addshopping'
 
 export default {
   name: 'App',
   data () {
     return {
-      inputName: [],
-      inputTrademark: [],
-      inputLocation: [],
-      inputPrice: [],
-      inputUnitSize: [],
-      inputUnitType: [],
-      inputQuantity: [],
       forceReRenderKey: 0,
-      inputLinesQuantity: 5,
+      inputLinesQuantity: 1,
       dataToSend: [{
         name: 'testName',
         trademark: 'testTrademark',
@@ -59,7 +58,8 @@ export default {
         unitType: 'ml',
         quantity: 1
       }],
-      products: []
+      products: [],
+      purchases: []
     }
   },
   computed: {
@@ -68,31 +68,40 @@ export default {
     }
   },
   methods: {
-    inputAdder: function (i) {
-      this.dataToSend.push({
-        name: this.inputName[i],
-        trademark: this.inputTrademark[i],
-        location: this.inputLocation[i],
-        price: this.inputPrice[i],
-        unitsize: this.inputUnitSize[i],
-        unitType: this.inputUnitType[i],
-        quantity: this.inputQuantity[i]
-      })
+    async sendRequestProducts () {
+      await axios.get(API_URL_READ)
+        .then(response => {
+          this.products = response.data
+        })
     },
-    async SendRequest () {
-      const result = await axios.get(API_URL_READ)
-      this.products = result.data
+    async sendRequestPurchases () {
+      await axios.get(API_URL_GETALLPURCHASES)
+        .then(response => {
+          this.purchases = response.data
+        })
     },
-    async SendUpdate (inputLinesQuantity) {
-      for (var i = 1; i <= inputLinesQuantity; ++i) {
-        this.inputAdder(i)
-      }
-      await axios.post(API_URL_ADD_SHOPPING, {
-        jsonData: JSON.stringify(this.dataToSend)
-      })
+    async SendUpdate () {
+      await axios.post(API_URL_ADD_SHOPPING, this.dataToSend)
+      this.inputLinesQuantity = 1
+      this.dataToSend = [{
+        name: '',
+        trademark: '',
+        location: '',
+        price: 0,
+        unitSize: 0,
+        unitType: '',
+        quantity: 1
+      }]
     },
     muteRows: function (diff) {
       this.inputLinesQuantity += diff
+      while (this.inputLinesQuantity !== this.dataToSend.length) {
+        if (this.inputLinesQuantity > this.dataToSend.length) {
+          this.dataToSend.push({})
+        } else {
+          this.dataToSend.pop()
+        }
+      }
     }
   },
   watch: {

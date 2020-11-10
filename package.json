@@ -22,10 +22,16 @@
   },
   "homepage": "https://github.com/Bencebt/shopping-app-backend#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "eslint": "^7.11.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.9"
+    "mini-css-extract-plugin": "^1.2.1",
+    "mongoose": "^5.10.9",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
+    "server.js": "^1.0.0"
   }
 }

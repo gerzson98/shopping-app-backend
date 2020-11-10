@@ -2,7 +2,7 @@
 
 const asyncHelper = require('../middleware/async')
 const { ProductFunctions } = require('../../functions/ProductFunctions')
-//const { response } = require('express')
+// const { response } = require('express')
 
 exports.getAllProduct = asyncHelper(async (request, response) => {
   const productFunctions = new ProductFunctions()
@@ -10,14 +10,15 @@ exports.getAllProduct = asyncHelper(async (request, response) => {
   response.status(200).json(result)
 })
 
-exports.upLoadProduct = asyncHelper(async (request, response) => {
+exports.getProductID = asyncHelper(async (request, response) => {
   const productFunctions = new ProductFunctions()
-  await productFunctions.upLoadProduct(request.body)
-  response.status(200)
+  const result = await productFunctions.getProductID(request.body)
+  response.status(200).json(result)
 })
 
-// exports.getProductID = asyncHelper(async (request, response) => {
+// exports.upLoadProduct = asyncHelper(async (request, response) => {
 //   const productFunctions = new ProductFunctions()
-//   const result = await productFunctions.getProductID(request.body)
-//   response.status(200).json(result)
+//   await productFunctions.upLoadProduct(request.body)
+//   response.status(200)
 // })
+
