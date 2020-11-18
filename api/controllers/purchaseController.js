@@ -9,7 +9,8 @@ exports.addNewShopping = asyncHelper((request, response) => {
   const purchaseFunctions = new PurchaseFunctions()
   const productFunctions = new ProductFunctions()
   const convert = new ConvertFunctions()
-  const date = new Date(Date.now()).toLocaleDateString()
+  var tmpDate = new Date(Date.now()).toISOString()
+  const date = tmpDate.substring(0, 9)
   const data = request.body
   if (Array.isArray(data)) {
     data.forEach(async function (element) {
