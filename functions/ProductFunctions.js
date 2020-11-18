@@ -22,6 +22,19 @@ class ProductFunctions {
     }
   }
 
+  async deleteAll() {
+    const queryString = 'TRUNCATE TABLE shopping_app.products;'
+    try {
+      await db().query(queryString)
+    }
+    catch (err) {
+      return new Error(err)
+    } 
+    finally {
+      db().close()
+    }
+  }
+
   async getAllProduct() {
     const queryString = 'SELECT * FROM shopping_app.products;'
     try {

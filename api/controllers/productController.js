@@ -16,6 +16,12 @@ exports.getProductID = asyncHelper(async (request, response) => {
   response.status(200).json(result)
 })
 
+exports.deleteAllProducts = asyncHelper(async (request, response) => {
+  const productFunctions = new ProductFunctions()
+  await productFunctions.deleteAll()
+  response.status(200)
+})
+
 // exports.upLoadProduct = asyncHelper(async (request, response) => {
 //   const productFunctions = new ProductFunctions()
 //   await productFunctions.upLoadProduct(request.body)

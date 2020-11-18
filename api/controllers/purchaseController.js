@@ -9,7 +9,7 @@ exports.addNewShopping = asyncHelper((request, response) => {
   const purchaseFunctions = new PurchaseFunctions()
   const productFunctions = new ProductFunctions()
   const convert = new ConvertFunctions()
-  const date = new Date(Date.now()).toISOString()
+  const date = new Date(Date.now()).toLocaleDateString()
   const data = request.body
   if (Array.isArray(data)) {
     data.forEach(async function (element) {
@@ -25,6 +25,12 @@ exports.getAllPurchases = asyncHelper(async (request, response) => {
   const purchaseFunctions = new PurchaseFunctions()
   const result = await purchaseFunctions.getAllPurchases()
   response.status(200).json(result)
+})
+
+exports.deleteAll = asyncHelper(async (request, response) => {
+  const purchaseFunctions = new PurchaseFunctions()
+  await purchaseFunctions.deleteAll()
+  response.status(200)
 })
 
 

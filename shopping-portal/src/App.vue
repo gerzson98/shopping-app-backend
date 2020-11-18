@@ -2,6 +2,8 @@
   <div class="home" :key="forceReRenderKey">
       <button @click="muteRows(1)">Add row for Input</button>
       <button @click="muteRows((-1))">Delete a row for Input</button>
+      <button @click="deletePurchases()">Delete purchase</button>
+      <button @click="deleteProducts()">Delete products</button>
       <div>
         <label>What was the name of the product?</label>
         <label>What trademark did it have?</label>
@@ -42,7 +44,8 @@ import axios from 'axios'
 const API_URL_READ = 'http://localhost:5000/product/getallproducts'
 const API_URL_GETALLPURCHASES = 'http://localhost:5000/purchases/getallpurchases'
 const API_URL_ADD_SHOPPING = 'http://localhost:5000/purchases/addshopping'
-
+const API_URL_DELETE_PURCHASES = 'http://localhost:5000/purchases/delete'
+const API_URL_DELETE_PRODUCTS = 'http://localhost:5000/product/erase'
 export default {
   name: 'App',
   data () {
@@ -68,6 +71,12 @@ export default {
     }
   },
   methods: {
+    async deletePurchases () {
+      await axios.post(API_URL_DELETE_PURCHASES)
+    },
+    async deleteProducts () {
+      await axios.post(API_URL_DELETE_PRODUCTS)
+    },
     async sendRequestProducts () {
       await axios.get(API_URL_READ)
         .then(response => {
