@@ -1,25 +1,40 @@
-'use strict'
+'use strict';
 
 
-const {db} = require('../server/db')
+const {db} = require('../server/db');
 
 /**
  * @typedef PurchaseFunctions
  */
 
 class PurchaseFunctions {
+
   async addNewShopping(product_id, location, price, unitType, unitSize, quantity, date){
+    const queryStringAddPurchase = `INSERT INTO purchases (product_id, location, price, unit_size, unit_type, quantity, date) VALUES('${product_id}', '${location}', '${price}', '${unitSize}', '${unitType}', '${quantity}',  '${date}');`
     try {
-      const queryStringAddPurchase = `INSERT INTO purchases (product_id, location, price, unit_size, unit_type, quantity, date) VALUES('${product_id}', '${location}', '${price}', '${unitSize}', '${unitType}', '${quantity}',  '${date}');`
-      return await db().query(queryStringAddPurchase)
+      await db().query(queryStringAddPurchase)
     }
     catch (err) {
-      return err
+      console.log(new Error(err))
+      return new Error(err)
     }
     finally {
       db().close()
     }
   }
+
+  // async getPurchasesByDate (from) {
+  //   const queryString = `SELECT * FROM purchases WHERE date > '${from}';`
+  //   try {
+  //     const result = await db().query(queryString)
+  //     return result
+  //   }
+  //   catch (err) {
+  //     return new Error(err)
+  //   } finally {
+  //     db().close()
+  //   }
+  // }
 
   async getAllPurchases () {
     const queryString = 'SELECT * FROM shopping_app.purchases;'
@@ -28,6 +43,7 @@ class PurchaseFunctions {
       return result
     }
     catch (err) {
+      console.log(new Error(err))
       return new Error(err) 
     }
     finally {
@@ -41,8 +57,9 @@ class PurchaseFunctions {
       await db().query(queryString)
     }
     catch (err) {
+      console.log(new Error(err))
       return new Error(err)
-    } 
+    }
     finally {
       db().close()
     }
@@ -56,8 +73,7 @@ class PurchaseFunctions {
   //   }
   //   catch(err){
   //     return new Error(err)
-  //   }
-  //   finally{
+  //   } finally{
   //     db().close()
   //   }
   // }

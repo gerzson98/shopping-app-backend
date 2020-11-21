@@ -19,7 +19,7 @@ exports.getProductID = asyncHelper(async (request, response) => {
 exports.deleteAllProducts = asyncHelper(async (request, response) => {
   const productFunctions = new ProductFunctions()
   await productFunctions.deleteAll()
-  response.status(200)
+  response.status(200).json({})
 })
 
 // exports.upLoadProduct = asyncHelper(async (request, response) => {

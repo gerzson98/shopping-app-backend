@@ -15,9 +15,9 @@ class ProductFunctions {
       return result
     }
     catch (err) {
+      console.log(new Error(err))
       return new Error(err)
-    }
-    finally {
+    } finally {
       db().close()
     }
   }
@@ -28,9 +28,9 @@ class ProductFunctions {
       await db().query(queryString)
     }
     catch (err) {
+      console.log(new Error(err))
       return new Error(err)
-    } 
-    finally {
+    } finally {
       db().close()
     }
   }
@@ -42,9 +42,9 @@ class ProductFunctions {
       return result
     }
     catch (err) {
+      console.log(new Error(err))
       return new Error(err)
-    }
-    finally {
+    } finally {
       db().close()
     }
   }
@@ -56,8 +56,7 @@ class ProductFunctions {
     }
     catch (err) {
       return new Error(err)
-    }
-    finally {
+    } finally {
       db().close()
     }
   }
@@ -69,8 +68,7 @@ class ProductFunctions {
     }
     catch (err) {
       return new Error(err)
-    }
-    finally {
+    } finally {
       db().close()
     }
   }
@@ -84,16 +82,14 @@ class ProductFunctions {
       const length = JSON.parse(JSON.stringify(result)).length
       if (length === 0) {
         await this.addProduct(name, trademark, quantity)
-      }
-      else {
+      } else {
         await this.incrementPurchases(name, trademark, quantity)
       }
       return await this.getProductID(name, trademark)
     }
     catch (err) {
       return new Error(err)
-    }
-    finally {
+    } finally {
       db().close()
     }
   }

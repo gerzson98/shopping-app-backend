@@ -1,24 +1,44 @@
 <template>
-  <div class="home" :key="forceReRenderKey">
-    <router-view/>
+  <div class="addBill">
+    <nav class="mainMenu">
+      <router-link :to="{ name: 'Test' }">Let's go testing shiet</router-link>
+      <router-link :to="{ name: 'Add' }">Add another bill</router-link>
+      <router-link :to="{ name: 'Info' }">Lets see some computed data</router-link>
+    </nav>
+    <div>
+      <button @click="muteRows(1)">Add row for Input</button>
+      <button @click="muteRows((-1))">Delete a row for Input</button>
+    </div>
+      <div v-for="(item, index) in dataToSend" :key="index">
+        <input v-model="item.name" placeholder="Product name" />
+        <input v-model="item.trademark" placeholder="Trademark's name" />
+        <input v-model="item.location" placeholder="Location" />
+        <input v-model="item.price" placeholder="Price" />
+        <input v-model="item.unitSize" placeholder="Unit size" />
+        <select v-model="item.unitType">
+          <option>db</option>
+          <option>g</option>
+          <option>ml</option>
+          <option>kg</option>
+          <option>l</option>
+        </select>
+        <input v-model="item.quantity" placeholder="Pieces" />
+      </div>
+      <div>
+        <button @click="SendUpdate()">Submit</button>
+      </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-const API_URL_READ = 'http://localhost:5000/product/getallproducts'
-const API_URL_GETALLPURCHASES = 'http://localhost:5000/purchases/getallpurchases'
 const API_URL_ADD_SHOPPING = 'http://localhost:5000/purchases/addshopping'
-const API_URL_DELETE_PURCHASES = 'http://localhost:5000/purchases/delete'
-const API_URL_DELETE_PRODUCTS = 'http://localhost:5000/product/erase'
-const API_URL_SPENT = 'http://localhost:5000/purchases/spent'
 export default {
-  name: 'App',
+  name: 'Add',
   data () {
     return {
       forceReRenderKey: 0,
       inputLinesQuantity: 1,
-      moneySpent: 0,
       dataToSend: [{
         name: 'testName',
         trademark: 'testTrademark',
@@ -27,41 +47,10 @@ export default {
         unitSize: 500,
         unitType: 'ml',
         quantity: 1
-      }],
-      products: [],
-      purchases: []
-    }
-  },
-  computed: {
-    adat: function () {
-      return this.products
+      }]
     }
   },
   methods: {
-    async getMoneySpent () {
-      await axios.get(API_URL_SPENT)
-        .then(response => {
-          this.moneySpent = response.data
-        })
-    },
-    async deletePurchases () {
-      await axios.post(API_URL_DELETE_PURCHASES)
-    },
-    async deleteProducts () {
-      await axios.post(API_URL_DELETE_PRODUCTS)
-    },
-    async sendRequestProducts () {
-      await axios.get(API_URL_READ)
-        .then(response => {
-          this.products = response.data
-        })
-    },
-    async sendRequestPurchases () {
-      await axios.get(API_URL_GETALLPURCHASES)
-        .then(response => {
-          this.purchases = response.data
-        })
-    },
     async SendUpdate () {
       try {
         await axios.post(API_URL_ADD_SHOPPING, this.dataToSend)
