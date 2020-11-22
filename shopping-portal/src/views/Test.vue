@@ -1,10 +1,5 @@
 <template>
   <div class="test">
-    <nav class="mainMenu">
-      <router-link :to="{ name: 'Test' }">Let's go testing shiet</router-link>
-      <router-link :to="{ name: 'Add' }">Add another bill</router-link>
-      <router-link :to="{ name: 'Info' }">Lets see some computed data</router-link>
-    </nav>
     <div>
       <button @click="sendRequestProducts()">Let's see what products we have</button>
       <button @click="sendRequestPurchases()">Let's see what purchases we have</button>

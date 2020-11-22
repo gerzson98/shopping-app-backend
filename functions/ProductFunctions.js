@@ -8,6 +8,7 @@ const { db } = require('../server/db')
  * @typedef ProductFunctions
  */
 class ProductFunctions {
+  
   async getProductID(name, trademark) {
     const queryString = `SELECT product_id FROM products WHERE name = '${name}' AND trademark = '${trademark}'`
     try {
@@ -15,8 +16,7 @@ class ProductFunctions {
       return result
     }
     catch (err) {
-      console.log(new Error(err))
-      return new Error(err)
+      return err
     } finally {
       db().close()
     }
@@ -28,8 +28,7 @@ class ProductFunctions {
       await db().query(queryString)
     }
     catch (err) {
-      console.log(new Error(err))
-      return new Error(err)
+      return err
     } finally {
       db().close()
     }
@@ -42,8 +41,7 @@ class ProductFunctions {
       return result
     }
     catch (err) {
-      console.log(new Error(err))
-      return new Error(err)
+      return err
     } finally {
       db().close()
     }
@@ -55,7 +53,7 @@ class ProductFunctions {
       await db().query(queryString)
     }
     catch (err) {
-      return new Error(err)
+      return err
     } finally {
       db().close()
     }
@@ -67,7 +65,7 @@ class ProductFunctions {
       await db().query(queryStringInsert)
     }
     catch (err) {
-      return new Error(err)
+      return err
     } finally {
       db().close()
     }
@@ -88,7 +86,7 @@ class ProductFunctions {
       return await this.getProductID(name, trademark)
     }
     catch (err) {
-      return new Error(err)
+      return err
     } finally {
       db().close()
     }

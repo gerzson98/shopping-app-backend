@@ -51,6 +51,28 @@ class PurchaseFunctions {
     }
   }
 
+  async getFavShop (by) {
+    let queryString = '';
+    if (by == 'Money') {
+      queryString = 'Select location, price, quantity FROM shopping_app.purchases;'
+    } else if (by == 'Quantity') {
+      queryString = 'Select location, quantity FROM shopping_app.purchases;'
+    } else if (by == 'Types') {
+      queryString = 'Select location, product_id FROM shopping_app.purchases;'
+    }
+    try {
+      const result = await db().query(queryString)
+      return result
+    }
+    catch (err) {
+      console.log(new Error(err))
+      return new Error(err) 
+    }
+    finally {
+      db().close()
+    }
+  }
+
   async deleteAll() {
     const queryString = 'TRUNCATE TABLE shopping_app.purchases;'
     try {

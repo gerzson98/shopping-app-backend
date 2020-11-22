@@ -4,6 +4,7 @@ const asyncHelper = require('../middleware/async')
 const { PurchaseFunctions } = require('../../functions/PurchaseFunctions')
 const { ProductFunctions } = require('../../functions/ProductFunctions')
 const { ConvertFunctions } = require('../../functions/Convert')
+const { UtilFunctions } = require('../../functions/Utils')
 
 exports.addNewShopping = asyncHelper(async (request, response) => {
   const purchaseFunctions = new PurchaseFunctions()
@@ -56,5 +57,52 @@ exports.deleteAll = asyncHelper(async (request, response) => {
   response.status(200).json({})
 })
 
+exports.getFavShop = asyncHelper(async (request, response) =>{
+  const purchaseFunctions = new PurchaseFunctions()
+  const convert = new ConvertFunctions()
+  const utils = new UtilFunctions()
+  const result = await purchaseFunctions.getFavShop(request.body)
+  const data = convert.resultToObject(result)
+  let favShop = ''
+  try {
+    if (Array.isArray(data)) {
+      //The matching indexes belong together.
+      let shops = []
+      let points = []
+      //Ehhez gecire nem maradt agyam megírni.
+      // if (request.body === 'Types') {
+      //   favShop = data[0].location
+      // } else
+      if (!data[0].price) {
+          data.forEach(purchase => {
+            if (shops.includes(purchase.location)) {
+              let index = shops.indexOf(purchase.location)
+              points[index] += purchase.quantity
+            } else {
+              shops.push(purchase.location)
+              points.push(purchase.quantity)
+            }
+          })
+          favShop = utils.pickBest(shops, points)
+      } else {
+        data.forEach(purchase => {
+          if (shops.includes(purchase.location)) {
+            let index = shops.indexOf(purchase.location)
+            points[index] += purchase.quantity * purchase.price
+          } else {
+            shops.push(purchase.location)
+            points.push(purchase.quantity * purchase.price)
+          }
+        })
+        favShop = utils.pickBest(shops, points)
+      }
+      response.status(200).json(favShop)
+    } else {
+      response.status(401).json({})
+    }
+  } catch (err) {
+    response.status(500).json({err})
+  }
+})
 
 

@@ -1,28 +1,23 @@
 <template>
   <div class="addBill">
-    <nav class="mainMenu">
-      <router-link :to="{ name: 'Test' }">Let's go testing shiet</router-link>
-      <router-link :to="{ name: 'Add' }">Add another bill</router-link>
-      <router-link :to="{ name: 'Info' }">Lets see some computed data</router-link>
-    </nav>
     <div>
       <button @click="muteRows(1)">Add row for Input</button>
       <button @click="muteRows((-1))">Delete a row for Input</button>
     </div>
-      <div v-for="(item, index) in dataToSend" :key="index">
-        <input v-model="item.name" placeholder="Product name" />
-        <input v-model="item.trademark" placeholder="Trademark's name" />
-        <input v-model="item.location" placeholder="Location" />
-        <input v-model="item.price" placeholder="Price" />
-        <input v-model="item.unitSize" placeholder="Unit size" />
-        <select v-model="item.unitType">
+      <div class="inputBox" v-for="(item, index) in dataToSend" :key="index">
+        <input class="inputBox" v-model="item.name" placeholder="Product name" />
+        <input class="inputBox" v-model="item.trademark" placeholder="Trademark's name" />
+        <input class="inputBox" v-model="item.location" placeholder="Location" />
+        <input class="inputBox" v-model="item.price" placeholder="Price" />
+        <input class="inputBox" v-model="item.unitSize" placeholder="Unit size" />
+        <select class="inputBox" v-model="item.unitType">
           <option>db</option>
           <option>g</option>
           <option>ml</option>
           <option>kg</option>
           <option>l</option>
         </select>
-        <input v-model="item.quantity" placeholder="Pieces" />
+        <input class="inputBox" v-model="item.quantity" placeholder="Pieces" />
       </div>
       <div>
         <button @click="SendUpdate()">Submit</button>
