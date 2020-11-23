@@ -7,7 +7,7 @@ function attachRoutes(app) {
   app.get('/product/getallproducts', getAllProduct)
   app.get('/purchases/getallpurchases', getAllPurchases)
   app.get('/purchases/spent', seeSpending)
-  app.get('/purchase/favshop', getFavShop)
+  app.post('/purchases/favshop', getFavShop)
   app.post('/purchases/addshopping', addNewShopping)
   app.post('/product/erase', deleteAllProducts)
   app.post('/purchases/delete', deleteAll)

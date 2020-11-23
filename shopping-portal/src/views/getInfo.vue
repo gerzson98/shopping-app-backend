@@ -5,15 +5,24 @@
       <button @click="sendRequestProducts()">Let's see what products we have</button>
       <button @click="sendRequestPurchases()">Let's see what purchases we have</button>
     </div>
-    <div>
-      <p>Favourite shop's pick by;</p>
-      <select v-model="basedOn">
+      <h1>Favourite shop: {{ favouriteShop }}</h1>
+    <div style="display: table;">
+      <h3 style="display: table-cell">By: </h3>
+      <select  style="display: table-cell" v-model="basedOn">
         <option>Money</option>
         <option>Quantity</option>
         <!-- <option>Times of Visit</option>
         <option>Types</option> -->
       </select>
-      <h1>Favourite shop: {{ favouriteShop }}</h1>
+      <img
+      id="refreshButton"
+      @mouseover="hover = true"
+      @mouseleave="hover = false"
+      @click="getFavShop()"
+      style="width: 20px; height: 20px; display: table-cell;"
+      src="../../public/img/refresh.png"
+      alt="refresh">
+      <label for="refreshButton" v-if="hover">Click this button to load/refresh favShop!</label>
     </div>
     <div>
       <h1>{{ moneySpent }}</h1>
@@ -39,6 +48,7 @@ export default {
     return {
       forceReRenderKey: 0,
       moneySpent: 0,
+      hover: false,
       products: [],
       purchases: [],
       basedOn: 'Money',
@@ -63,18 +73,16 @@ export default {
         .then(response => {
           this.purchases = response.data
         })
-    }
-  },
-  asyncComputed: {
-    async favouriteShop () {
-      const response = await axios.get(API_URL_FAVSHOP, JSON.stringify(this.basedOn))
-      if ((typeof response.data) === 'string') {
-        this.favouriteShop = response.data
-        return this.favouriteShop
-      } else {
-        this.favouriteShop = 'Nem jó a válasz típusa'
-        return this.favouriteShop
-      }
+    },
+    async getFavShop () {
+      await axios.post(API_URL_FAVSHOP, this.basedOn)
+        .then(response => {
+          if ((typeof response.data) === 'string') {
+            this.favouriteShop = response.data
+          } else {
+            this.favouriteShop = 'Nem jó a válasz típusa'
+          }
+        })
     }
   },
   watch: {

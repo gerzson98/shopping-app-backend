@@ -4,10 +4,16 @@
       <button @click="muteRows(1)">Add row for Input</button>
       <button @click="muteRows((-1))">Delete a row for Input</button>
     </div>
+    <div class="inputBox">
+      <p>Shop: </p>
+      <input class="inputBox" v-model="location" placeholder="Location" />
+    </div>
+    <p>
+      Purchased stuff;
+    </p>
       <div class="inputBox" v-for="(item, index) in dataToSend" :key="index">
         <input class="inputBox" v-model="item.name" placeholder="Product name" />
         <input class="inputBox" v-model="item.trademark" placeholder="Trademark's name" />
-        <input class="inputBox" v-model="item.location" placeholder="Location" />
         <input class="inputBox" v-model="item.price" placeholder="Price" />
         <input class="inputBox" v-model="item.unitSize" placeholder="Unit size" />
         <select class="inputBox" v-model="item.unitType">
@@ -20,7 +26,7 @@
         <input class="inputBox" v-model="item.quantity" placeholder="Pieces" />
       </div>
       <div>
-        <button @click="SendUpdate()">Submit</button>
+        <button id="submitButton" @click="SendUpdate()">Submit</button>
       </div>
   </div>
 </template>
@@ -34,10 +40,14 @@ export default {
     return {
       forceReRenderKey: 0,
       inputLinesQuantity: 1,
+      location: 'CBA',
+      // tmpMSG: {
+      //   locationMSG: '',
+      //   dataMSG: []
+      // },
       dataToSend: [{
         name: 'testName',
         trademark: 'testTrademark',
-        location: 'CBA',
         price: 100,
         unitSize: 500,
         unitType: 'ml',
@@ -45,20 +55,31 @@ export default {
       }]
     }
   },
+  // computed: {
+  //   computeMSG: function () {
+  //     this.tmpMSG.locationMSG = this.location
+  //     this.tmpMSG.dataMSG = this.dataToSend
+  //     return tmpMSG
+  //   }
+  // },
   methods: {
     async SendUpdate () {
+      const MSG = {
+        location: this.location,
+        data: this.dataToSend
+      }
       try {
-        await axios.post(API_URL_ADD_SHOPPING, this.dataToSend)
+        await axios.post(API_URL_ADD_SHOPPING, MSG)
       } catch (error) {
         console.log('err', error)
       }
       this.inputLinesQuantity = 1
+      this.location = ''
       this.dataToSend = [{
         name: '',
         trademark: '',
-        location: '',
-        price: 0,
-        unitSize: 0,
+        price: '',
+        unitSize: '',
         unitType: '',
         quantity: 1
       }]

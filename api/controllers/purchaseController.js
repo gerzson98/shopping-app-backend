@@ -11,14 +11,15 @@ exports.addNewShopping = asyncHelper(async (request, response) => {
   const productFunctions = new ProductFunctions()
   const convert = new ConvertFunctions()
   const date = convert.getDateNow()
-  const data = request.body
+  const data = request.body.data
+  const location = request.body.location
   try {
     if (Array.isArray(data)) {
       for (let i = 0; i < data.length; ++i){ 
         let element = data[i];
         const result = await productFunctions.upLoadProduct(element.name, element.trademark, element.quantity)
         const product_id = convert.resultToObject(result)[0].product_id
-        await purchaseFunctions.addNewShopping(product_id, element.location, element.price, element.unitType, element.unitSize, element.quantity, date)
+        await purchaseFunctions.addNewShopping(product_id, location, element.price, element.unitType, element.unitSize, element.quantity, date)
       }
       response.status(200).json({})
     } else{
@@ -61,8 +62,11 @@ exports.getFavShop = asyncHelper(async (request, response) =>{
   const purchaseFunctions = new PurchaseFunctions()
   const convert = new ConvertFunctions()
   const utils = new UtilFunctions()
-  const result = await purchaseFunctions.getFavShop(request.body)
+  console.log(request.body)
+  const result = await purchaseFunctions.getFavShop(request.body.basedOn)
+  console.log(result)
   const data = convert.resultToObject(result)
+  console.log(data)
   let favShop = ''
   try {
     if (Array.isArray(data)) {
