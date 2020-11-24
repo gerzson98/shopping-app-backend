@@ -1,9 +1,5 @@
 <template>
   <div class="addBill">
-    <div>
-      <button @click="muteRows(1)">Add row for Input</button>
-      <button @click="muteRows((-1))">Delete a row for Input</button>
-    </div>
     <div class="inputBox">
       <p>Shop: </p>
       <input class="inputBox" v-model="location" placeholder="Location" />
@@ -11,7 +7,7 @@
     <p>
       Purchased stuff;
     </p>
-      <div class="inputBox" v-for="(item, index) in dataToSend" :key="index">
+      <div class="inputBox" v-for="(item, index) in bill" :key="index">
         <input class="inputBox" v-model="item.name" placeholder="Product name" />
         <input class="inputBox" v-model="item.trademark" placeholder="Trademark's name" />
         <input class="inputBox" v-model="item.price" placeholder="Price" />
@@ -24,6 +20,20 @@
           <option>l</option>
         </select>
         <input class="inputBox" v-model="item.quantity" placeholder="Pieces" />
+      </div>
+      <div>
+        <input class="inputBox" v-model="newLine.name" placeholder="Product name" />
+        <input class="inputBox" v-model="newLine.trademark" placeholder="Trademark's name" />
+        <input class="inputBox" v-model="newLine.price" placeholder="Price" />
+        <input class="inputBox" v-model="newLine.unitSize" placeholder="Unit size" />
+        <select class="inputBox" v-model="newLine.unitType">
+          <option>db</option>
+          <option>g</option>
+          <option>ml</option>
+          <option>kg</option>
+          <option>l</option>
+        </select>
+        <input class="inputBox" v-model="newLine.quantity" placeholder="Pieces" />
       </div>
       <div>
         <button id="submitButton" @click="SendUpdate()">Submit</button>
@@ -39,13 +49,16 @@ export default {
   data () {
     return {
       forceReRenderKey: 0,
-      inputLinesQuantity: 1,
       location: 'CBA',
-      // tmpMSG: {
-      //   locationMSG: '',
-      //   dataMSG: []
-      // },
-      dataToSend: [{
+      newLine: {
+        name: '',
+        trademark: '',
+        price: '',
+        unitSize: '',
+        unitType: 'db',
+        quantity: 1
+      },
+      bill: [{
         name: 'testName',
         trademark: 'testTrademark',
         price: 100,
@@ -55,27 +68,29 @@ export default {
       }]
     }
   },
-  // computed: {
-  //   computeMSG: function () {
-  //     this.tmpMSG.locationMSG = this.location
-  //     this.tmpMSG.dataMSG = this.dataToSend
-  //     return tmpMSG
-  //   }
-  // },
+  computed: {
+    pushNeeded: function () {
+      let answer = false
+      if (this.newLine.name !== '' && this.newLine.price !== '') {
+        answer = true
+      }
+      console.log('pushNeeded\'s current value:', answer)
+      return answer
+    }
+  },
   methods: {
     async SendUpdate () {
       const MSG = {
         location: this.location,
-        data: this.dataToSend
+        data: this.bill
       }
       try {
         await axios.post(API_URL_ADD_SHOPPING, MSG)
       } catch (error) {
         console.log('err', error)
       }
-      this.inputLinesQuantity = 1
       this.location = ''
-      this.dataToSend = [{
+      this.bill = [{
         name: '',
         trademark: '',
         price: '',
@@ -84,14 +99,16 @@ export default {
         quantity: 1
       }]
     },
-    muteRows: function (diff) {
-      this.inputLinesQuantity += diff
-      while (this.inputLinesQuantity !== this.dataToSend.length) {
-        if (this.inputLinesQuantity > this.dataToSend.length) {
-          this.dataToSend.push({})
-        } else {
-          this.dataToSend.pop()
-        }
+    pushToBill () {
+      console.log('Push method called')
+      this.bill.push(this.newLine)
+      this.newLine = {
+        name: '',
+        trademark: '',
+        price: '',
+        unitSize: '',
+        unitType: 'db',
+        quantity: 1
       }
     }
   },
@@ -100,6 +117,11 @@ export default {
       immediate: true,
       handler: function () {
         this.forceReRenderKey++
+      }
+    },
+    pushNeeded: function (val) {
+      if (val) {
+        this.pushToBill()
       }
     }
   }
