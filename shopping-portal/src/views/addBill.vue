@@ -43,6 +43,7 @@
 
 <script>
 import axios from 'axios'
+import debounce from 'lodash/debounce'
 const API_URL_ADD_SHOPPING = 'http://localhost:5000/purchases/addshopping'
 export default {
   name: 'Add',
@@ -59,26 +60,30 @@ export default {
         quantity: 1
       },
       bill: [{
-        name: 'testName',
-        trademark: 'testTrademark',
-        price: 100,
-        unitSize: 500,
-        unitType: 'ml',
+        name: 'Snickers',
+        trademark: 'Snickers',
+        price: 200,
+        unitSize: 50,
+        unitType: 'g',
         quantity: 1
       }]
     }
   },
+  created: function () {
+    this.debouncer = debounce(function () {
+      if (this.pushNeeded) {
+        this.pushToBill()
+      }
+    },
+    350)
+  },
   computed: {
     pushNeeded: function () {
-      let answer = false
-      if (this.newLine.name !== '' && this.newLine.price !== '') {
-        answer = true
-      }
-      console.log('pushNeeded\'s current value:', answer)
-      return answer
+      return this.newLine.name !== '' && this.newLine.price !== ''
     }
   },
   methods: {
+    debouncer: function () {},
     async SendUpdate () {
       const MSG = {
         location: this.location,
@@ -100,7 +105,6 @@ export default {
       }]
     },
     pushToBill () {
-      console.log('Push method called')
       this.bill.push(this.newLine)
       this.newLine = {
         name: '',
@@ -119,10 +123,11 @@ export default {
         this.forceReRenderKey++
       }
     },
-    pushNeeded: function (val) {
-      if (val) {
-        this.pushToBill()
-      }
+    newLine: {
+      handler: function () {
+        this.debouncer()
+      },
+      deep: true
     }
   }
 }
