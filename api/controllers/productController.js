@@ -2,7 +2,6 @@
 
 const asyncHelper = require('../middleware/async')
 const { ProductFunctions } = require('../../functions/ProductFunctions')
-// const { response } = require('express')
 
 exports.getAllProduct = asyncHelper(async (request, response) => {
   const productFunctions = new ProductFunctions()
@@ -22,9 +21,4 @@ exports.deleteAllProducts = asyncHelper(async (request, response) => {
   response.status(200).json({})
 })
 
-// exports.upLoadProduct = asyncHelper(async (request, response) => {
-//   const productFunctions = new ProductFunctions()
-//   await productFunctions.upLoadProduct(request.body)
-//   response.status(200)
-// })
 

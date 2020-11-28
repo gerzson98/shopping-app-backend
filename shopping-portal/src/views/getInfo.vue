@@ -14,7 +14,7 @@
         <!-- <option>Times of Visit</option>
         <option>Types</option> -->
       </select>
-      <img
+      <!-- <img
       id="refreshButton"
       @mouseover="hover = true"
       @mouseleave="hover = false"
@@ -22,7 +22,7 @@
       style="width: 20px; height: 20px; display: table-cell;"
       src="../../public/img/refresh.png"
       alt="refresh">
-      <label for="refreshButton" v-if="hover">Click this button to load/refresh favShop!</label>
+      <label for="refreshButton" v-if="hover">Click this button to load/refresh favShop!</label> -->
     </div>
     <div>
       <h1>{{ moneySpent }}</h1>
@@ -75,7 +75,10 @@ export default {
         })
     },
     async getFavShop () {
-      await axios.post(API_URL_FAVSHOP, this.basedOn)
+      const MSG = {
+        basedOn: this.basedOn
+      }
+      await axios.post(API_URL_FAVSHOP, MSG)
         .then(response => {
           if ((typeof response.data) === 'string') {
             this.favouriteShop = response.data
@@ -90,6 +93,12 @@ export default {
       immediate: true,
       handler: function () {
         this.forceReRenderKey++
+      }
+    },
+    basedOn: {
+      immediate: true,
+      handler: function () {
+        this.getFavShop()
       }
     }
   }

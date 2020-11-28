@@ -10,7 +10,6 @@
       <div class="inputBox" v-for="(item, index) in bill" :key="index">
         <input class="inputBox" v-model="item.name" placeholder="Product name" />
         <input class="inputBox" v-model="item.trademark" placeholder="Trademark's name" />
-        <input class="inputBox" v-model="item.price" placeholder="Price" />
         <input class="inputBox" v-model="item.unitSize" placeholder="Unit size" />
         <select class="inputBox" v-model="item.unitType">
           <option>db</option>
@@ -20,11 +19,11 @@
           <option>l</option>
         </select>
         <input class="inputBox" v-model="item.quantity" placeholder="Pieces" />
+        <input class="inputBox" v-model="item.price" placeholder="Price" />
       </div>
       <div>
         <input class="inputBox" v-model="newLine.name" placeholder="Product name" />
         <input class="inputBox" v-model="newLine.trademark" placeholder="Trademark's name" />
-        <input class="inputBox" v-model="newLine.price" placeholder="Price" />
         <input class="inputBox" v-model="newLine.unitSize" placeholder="Unit size" />
         <select class="inputBox" v-model="newLine.unitType">
           <option>db</option>
@@ -34,6 +33,7 @@
           <option>l</option>
         </select>
         <input class="inputBox" v-model="newLine.quantity" placeholder="Pieces" />
+        <input class="inputBox" v-model="newLine.price" placeholder="Price" />
       </div>
       <div>
         <button id="submitButton" @click="SendUpdate()">Submit</button>
@@ -54,18 +54,18 @@ export default {
       newLine: {
         name: '',
         trademark: '',
-        price: '',
         unitSize: '',
-        unitType: 'db',
-        quantity: 1
+        unitType: '',
+        quantity: '',
+        price: ''
       },
       bill: [{
         name: 'Snickers',
         trademark: 'Snickers',
-        price: 200,
         unitSize: 50,
         unitType: 'g',
-        quantity: 1
+        quantity: 1,
+        price: 200
       }]
     }
   },
@@ -98,10 +98,10 @@ export default {
       this.bill = [{
         name: '',
         trademark: '',
-        price: '',
         unitSize: '',
         unitType: '',
-        quantity: 1
+        quantity: '',
+        price: ''
       }]
     },
     pushToBill () {
@@ -109,10 +109,10 @@ export default {
       this.newLine = {
         name: '',
         trademark: '',
-        price: '',
         unitSize: '',
-        unitType: 'db',
-        quantity: 1
+        unitType: '',
+        quantity: '',
+        price: ''
       }
     }
   },

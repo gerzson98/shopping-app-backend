@@ -22,6 +22,7 @@ const API_URL_GETALLPURCHASES = 'http://localhost:5000/purchases/getallpurchases
 const API_URL_ADD_SHOPPING = 'http://localhost:5000/purchases/addshopping'
 const API_URL_DELETE_PURCHASES = 'http://localhost:5000/purchases/delete'
 const API_URL_DELETE_PRODUCTS = 'http://localhost:5000/product/erase'
+const API_URL_FAVSHOP = 'http://localhost:5000/purchases/favshop'
 const API_URL_SPENT = 'http://localhost:5000/purchases/spent'
 export default {
   name: 'App',
@@ -71,6 +72,20 @@ export default {
       await axios.get(API_URL_GETALLPURCHASES)
         .then(response => {
           this.purchases = response.data
+        })
+    },
+    async getFavShop () {
+      // Miért kell ezt csinálni? Mármint hogy ide si beírom...
+      const MSG = {
+        basedOn: this.basedOn
+      }
+      await axios.post(API_URL_FAVSHOP, MSG)
+        .then(response => {
+          if ((typeof response.data) === 'string') {
+            this.favouriteShop = response.data
+          } else {
+            this.favouriteShop = 'Nem jó a válasz típusa'
+          }
         })
     },
     async SendUpdate () {

@@ -1,7 +1,9 @@
 'use strict';
 
 
-const {db} = require('../server/db');
+const { db } = require('../server/db');
+const { QueryFunctions } = require('./querys');
+const { UtilFunctions } = require('./utils');
 
 /**
  * @typedef PurchaseFunctions
@@ -9,8 +11,8 @@ const {db} = require('../server/db');
 
 class PurchaseFunctions {
 
-  async addNewShopping(product_id, location, price, unitType, unitSize, quantity, date){
-    const queryStringAddPurchase = `INSERT INTO purchases (product_id, location, price, unit_size, unit_type, quantity, date) VALUES('${product_id}', '${location}', '${price}', '${unitSize}', '${unitType}', '${quantity}',  '${date}');`
+  async addNewShopping(product_id, location, price, unitType, unitSize, quantity){
+    const queryStringAddPurchase = `INSERT INTO purchases (product_id, location, price, unit_size, unit_type, quantity, date) VALUES('${product_id}', '${location}', '${price}', '${unitSize}', '${unitType}', '${quantity}', CURDATE());`
     try {
       await db().query(queryStringAddPurchase)
     }
@@ -37,7 +39,8 @@ class PurchaseFunctions {
   // }
 
   async getAllPurchases () {
-    const queryString = 'SELECT * FROM shopping_app.purchases;'
+    const querys = new QueryFunctions()
+    const queryString = querys.getByPrefs('purchases')
     try {
       const result = await db().query(queryString)
       return result
@@ -51,26 +54,69 @@ class PurchaseFunctions {
     }
   }
 
-  async getFavShop (by) {
+  async getFavShopData (by) {
     let queryString = '';
+    const querys = new QueryFunctions()
     if (by == 'Money') {
-      queryString = 'Select location, price, quantity FROM shopping_app.purchases;'
+      queryString = querys.getByPrefs('purchases', ['location', 'quantity', 'price'])
     } else if (by == 'Quantity') {
-      queryString = 'Select location, quantity FROM shopping_app.purchases;'
+      queryString = querys.getByPrefs('purchases', ['location', 'quantity'])
     } else if (by == 'Types') {
-      queryString = 'Select location, product_id FROM shopping_app.purchases;'
+      queryString = querys.getByPrefs('purchases', ['location', 'product_id'])
     }
-    try {
-      const result = await db().query(queryString)
-      return result
+    console.log(queryString)
+    if (queryString !== '') {
+      try {
+        const result = await db().query(queryString)
+        return result
+      }
+      catch (err) {
+        console.log(new Error(err))
+        return new Error(err) 
+      }
+      finally {
+        db().close()
+      }
+    } else {
+      let err = 'Request didnt reach function level.'
+      return err
+    } 
+  }
+  
+  calculateFavShop (data) {
+    const utils = new UtilFunctions()
+
+    let favShop = ''
+    let shops = []
+    let points = []
+      //Ehhez gecire nem maradt agyam megírni.
+      // if (request.body === 'Types') {
+      //   favShop = data[0].location
+      // } else
+    if (!data[0].price) {
+      data.forEach(purchase => {
+        if (shops.includes(purchase.location)) {
+          let index = shops.indexOf(purchase.location)
+          points[index] += purchase.quantity
+        } else {
+          shops.push(purchase.location)
+          points.push(purchase.quantity)
+        }
+      })
+      favShop = utils.pickBest(shops, points)
+    } else {
+      data.forEach(purchase => {
+        if (shops.includes(purchase.location)) {
+          let index = shops.indexOf(purchase.location)
+          points[index] += purchase.quantity * purchase.price
+        } else {
+          shops.push(purchase.location)
+          points.push(purchase.quantity * purchase.price)
+        }
+      })
+      favShop = utils.pickBest(shops, points)
     }
-    catch (err) {
-      console.log(new Error(err))
-      return new Error(err) 
-    }
-    finally {
-      db().close()
-    }
+    return favShop
   }
 
   async deleteAll() {

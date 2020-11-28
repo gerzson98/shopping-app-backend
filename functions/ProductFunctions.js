@@ -2,6 +2,7 @@
 
 
 const { db } = require('../server/db')
+const { QueryFunctions } = require('./querys')
 
 
 /**
@@ -10,7 +11,18 @@ const { db } = require('../server/db')
 class ProductFunctions {
   
   async getProductID(name, trademark) {
-    const queryString = `SELECT product_id FROM products WHERE name = '${name}' AND trademark = '${trademark}'`
+    const querys = new QueryFunctions()
+    const conditions = [
+      {
+        column: 'name',
+        value: `'${name}'`
+      },
+      {
+        column: 'trademark',
+        value: `'${trademark}'`
+      }
+    ]
+    const queryString = querys.getByPrefs('products', ['product_id'], conditions)
     try {
       const result = await db().query(queryString)
       return result
@@ -35,7 +47,8 @@ class ProductFunctions {
   }
 
   async getAllProduct() {
-    const queryString = 'SELECT * FROM shopping_app.products;'
+    const querys = new QueryFunctions()
+    const queryString = querys.getByPrefs('products')
     try {
       const result = await db().query(queryString)
       return result

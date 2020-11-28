@@ -22,6 +22,19 @@
     }
   }
 
+  defaultSetter (location, element) {
+    const input = element
+    if (!input.trademark)
+      element.trademark = location
+    if (!input.unitSize)
+      element.unitSize = 1
+    if (!input.unitType)
+      element.unitType = 'db'
+    if (!input.quantity)
+      element.quantity = 1
+    
+    return element
+  }
  }
 
  exports.UtilFunctions = UtilFunctions
