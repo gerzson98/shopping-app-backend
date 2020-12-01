@@ -1,10 +1,10 @@
 <template>
   <div class="test">
     <div>
-      <button @click="sendRequestProducts()">Let's see what products we have</button>
-      <button @click="sendRequestPurchases()">Let's see what purchases we have</button>
-      <button @click="deletePurchases()">Delete purchase</button>
-      <button @click="deleteProducts()">Delete products</button>
+      <button @click="get(url.product.getAll, 'products')">Let's see what products we have</button>
+      <button @click="get(url.purchase.getAll, 'purchases')">Let's see what purchases we have</button>
+      <button @click="get(url.purchase.erase, 'trash')">Delete purchase</button>
+      <button @click="get(url.purchase.erase, 'trash')">Delete products</button>
     </div>
     <div v-for="(item, index) in products" :key="index">
       <p>Termék: {{ item.name }} Márkája: {{ item.trademark }} Eddig összesen vásárolva: {{ item.purchases }} db</p>
@@ -17,36 +17,35 @@
 
 <script>
 import axios from 'axios'
-const API_URL_READ = 'http://localhost:5000/product/getallproducts'
-const API_URL_GETALLPURCHASES = 'http://localhost:5000/purchases/getallpurchases'
-const API_URL_DELETE_PURCHASES = 'http://localhost:5000/purchases/delete'
-const API_URL_DELETE_PRODUCTS = 'http://localhost:5000/product/erase'
+import URL from '../services/URL.json'
 export default {
   name: 'Test',
   data () {
     return {
+      trash: {},
+      url: {},
       forceReRenderKey: 0,
       products: [],
       purchases: []
     }
   },
+  created () {
+    this.url = URL
+  },
   methods: {
-    async deletePurchases () {
-      await axios.post(API_URL_DELETE_PURCHASES)
-    },
-    async deleteProducts () {
-      await axios.post(API_URL_DELETE_PRODUCTS)
-    },
-    async sendRequestProducts () {
-      await axios.get(API_URL_READ)
+    async get (apiUrl, destination) {
+      axios.get(apiUrl)
         .then(response => {
-          this.products = response.data
+          this.$data[destination] = response.data
         })
     },
-    async sendRequestPurchases () {
-      await axios.get(API_URL_GETALLPURCHASES)
+    async post (apiUrl, destination, message) {
+      const MSG = {
+        msg: message
+      }
+      axios.post(apiUrl, MSG)
         .then(response => {
-          this.purchases = response.data
+          this.$data[destination] = response.data
         })
     }
   },
