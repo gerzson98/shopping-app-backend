@@ -3,6 +3,7 @@
 
 const { db } = require('../server/db')
 const { QueryFunctions } = require('./querys')
+const { ConvertFunctions } = require('./Convert')
 
 
 /**
@@ -10,16 +11,16 @@ const { QueryFunctions } = require('./querys')
  */
 class ProductFunctions {
   
-  async getProductID(name, trademark) {
+  async getProductID (name, trademark) {
     const querys = new QueryFunctions()
     const conditions = [
       {
         column: 'name',
-        value: `'${name}'`
+        value: name
       },
       {
         column: 'trademark',
-        value: `'${trademark}'`
+        value: trademark
       }
     ]
     const queryString = querys.getByPrefs('products', ['product_id'], conditions)
@@ -34,7 +35,7 @@ class ProductFunctions {
     }
   }
 
-  async deleteAll() {
+  async deleteAll () {
     const queryString = 'TRUNCATE TABLE shopping_app.products;'
     try {
       await db().query(queryString)
@@ -46,7 +47,7 @@ class ProductFunctions {
     }
   }
 
-  async getAllProduct() {
+  async getAllProduct () {
     const querys = new QueryFunctions()
     const queryString = querys.getByPrefs('products')
     try {
@@ -60,7 +61,22 @@ class ProductFunctions {
     }
   }
 
-  async incrementPurchases(name, trademark, purchases) {
+  async getProductsNames () {
+    const query = new QueryFunctions()
+    const convert = new ConvertFunctions()
+    const queryString = query.getByPrefs('products', ['name'])
+    try {
+      const result = await db().query(queryString)
+      const message = convert.createSimpleArray(convert.resultToObject(result))
+      return message
+    } catch (err) {
+      return err
+    } finally {
+      db().close()
+    }
+  }
+
+  async incrementPurchases (name, trademark, purchases) {
     const queryString = `UPDATE products SET purchases = purchases + ${purchases} WHERE name = '${name}' AND trademark = '${trademark}';`
     try {
       await db().query(queryString)
@@ -72,7 +88,45 @@ class ProductFunctions {
     }
   }
 
-  async addProduct(name, trademark, purchases) {
+  async getIdForCheapestShop (name) {
+    const query = new QueryFunctions()
+    const convert = new ConvertFunctions()
+    const queryStringId = query.getByPrefs('products', ['product_id'], [{column: 'name', value: name}])
+    const answer = await db().query(queryStringId)
+    const idArray = convert.resultToObject(answer)
+    return idArray
+  }
+
+  async getDataForCheapestShopByID (name) {
+    const query = new QueryFunctions()
+    const convert = new ConvertFunctions()
+    const idArray = await this.getIdForCheapestShop(name)
+    let pricesAndLocations = []
+    for (let i = 0; i < idArray.length; ++i) {
+      const queryString = query.getByPrefs('purchases', ['location', 'price'], [{column: 'product_id', value: idArray[i].product_id}])
+      const answer = await db().query(queryString)
+      const result = convert.resultToObject(answer)
+      for (let j = 0; j < result.length; ++j) {
+        pricesAndLocations.push(result[j])
+      } 
+    }
+    return pricesAndLocations
+  }
+
+  async getCheapest (name) {
+    const data = await this.getDataForCheapestShopByID(name)
+    let minPrice = data[0].price
+    let location = data[0].location
+    data.forEach(element => {
+      if (element.price < minPrice) {
+        minPrice = element.price
+        location = element.location
+      }
+    })
+    return location
+  }
+
+  async addProduct (name, trademark, purchases) {
     const queryStringInsert = `INSERT INTO products (name, trademark, purchases) VALUES('${name}', '${trademark}', '${purchases}');`
     try {
       await db().query(queryStringInsert)
@@ -84,7 +138,7 @@ class ProductFunctions {
     }
   }
 
-  async upLoadProduct(name, trademark, quantity) {
+  async upLoadProduct (name, trademark, quantity) {
     if (!quantity) {
       quantity = 1
     }

@@ -21,36 +21,36 @@
    * @param {Array} conditions 
    */
   getByPrefs (table, columns, conditions) {
-    let e = 'SELECT\n'
+    let queryString = 'SELECT\n'
     if (!columns) {
-      this.add(e, '*\n')
+      queryString += '*\n'
     } else {
       for (let i = 0; i < columns.length - 1; ++i) {
-        this.add(e, columns[i] + ',\n')
+        queryString += columns[i] + ',\n'
       }
-      this.add(e, columns[columns.length - 1] + '\n')
+      queryString += columns[columns.length - 1] + '\n'
     }
-    this.add(e, `From  shopping_app.${table}`)
+    queryString += `FROM shopping_app.${table}`
     if (!conditions) {
-      this.add(e, ';')
-      return e
+      queryString += ';'
+      return queryString
     } else {
       const lastIndex = conditions.length - 1
-      this.add(e, '\nWHERE\n')
+      queryString += '\nWHERE\n'
       for (let i = 0; i < conditions.length; ++i) {
         if (!conditions[i].operator) {
-          this.add(e, `${conditions[i].column} = ${conditions[i].value}`)
+          queryString += `${conditions[i].column} = '${conditions[i].value}'`
         } else {
-          this.add(e, `${conditions[i].column} ${conditions[i].operator} ${conditions[i].vale}`)
+          queryString += `${conditions[i].column} ${conditions[i].operator} '${conditions[i].vale}'`
         }
         if (i === lastIndex) {
-          this.add(e, ';')
+          queryString += ';'
         } else {
-          this.add(e, ' AND\n')
+          queryString += ' AND\n'
         }
       }
     }
-    return e
+    return queryString
   }
  }
 

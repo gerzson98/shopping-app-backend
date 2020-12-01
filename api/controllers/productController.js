@@ -15,6 +15,18 @@ exports.getProductID = asyncHelper(async (request, response) => {
   response.status(200).json(result)
 })
 
+exports.getCheapest = asyncHelper(async (request, response) => {
+  const productFunctions = new ProductFunctions()
+  const result = await productFunctions.getCheapest(request.body.msg)
+  response.status(200).json(result)
+})
+
+exports.getProductsNames = asyncHelper(async (request, response) => {
+  const productFunctions = new ProductFunctions()
+  const result = await productFunctions.getProductsNames()
+  response.status(200).json(result)
+})
+
 exports.deleteAllProducts = asyncHelper(async (request, response) => {
   const productFunctions = new ProductFunctions()
   await productFunctions.deleteAll()

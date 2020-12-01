@@ -64,7 +64,6 @@ class PurchaseFunctions {
     } else if (by == 'Types') {
       queryString = querys.getByPrefs('purchases', ['location', 'product_id'])
     }
-    console.log(queryString)
     if (queryString !== '') {
       try {
         const result = await db().query(queryString)

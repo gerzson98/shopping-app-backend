@@ -1,0 +1,17 @@
+{
+  "product": {
+    "getAll": "http://localhost:5000/product/getallproducts",
+    "getAllName": "http://localhost:5000/product/getallnames",
+    "erease": "http://localhost:5000/product/erase"
+  },
+  "purchase": {
+    "getAll": "http://localhost:5000/purchases/getallpurchases",
+    "erease": "http://localhost:5000/purchases/delete",
+    "add": "http://localhost:5000/purchases/addshopping"
+  },
+  "computed": {
+    "allSpent": "http://localhost:5000/purchases/spent",
+    "favShop": "http://localhost:5000/purchases/favshop",
+    "cheapest": "http://localhost:5000/product/cheap"
+  }
+}

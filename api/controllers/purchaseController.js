@@ -61,7 +61,7 @@ exports.deleteAll = asyncHelper(async (request, response) => {
 exports.getFavShop = asyncHelper(async (request, response) => {
   const purchaseFunctions = new PurchaseFunctions()
   const convert = new ConvertFunctions()
-  const result = await purchaseFunctions.getFavShopData(request.body.basedOn)
+  const result = await purchaseFunctions.getFavShopData(request.body.msg)
   const data = convert.resultToObject(result)
   let favShop = ''
   try {
