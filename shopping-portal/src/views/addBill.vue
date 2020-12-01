@@ -22,7 +22,7 @@
         <input class="inputBox" v-model="item.price" placeholder="Price" />
       </div>
       <div>
-        <input class="inputBox" v-model="newLine.name" placeholder="Product name" />
+        <Input @muted="importFromInput" :logicalIndicator="inputIndicator" :options="productNames" class="inputBox"/>
         <input class="inputBox" v-model="newLine.trademark" placeholder="Trademark's name" />
         <input class="inputBox" v-model="newLine.unitSize" placeholder="Unit size" />
         <select class="inputBox" v-model="newLine.unitType">
@@ -38,26 +38,31 @@
       <div>
         <button id="submitButton" @click="SendUpdate()">Submit</button>
       </div>
+      <h1>NL name: {{ newLine.name }} NL Price: {{ newLine.price }}</h1>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import URL from '../services/URL.json'
+import Input from '../views/input'
 import debounce from 'lodash/debounce'
-const API_URL_ADD_SHOPPING = 'http://localhost:5000/purchases/addshopping'
+
 export default {
   name: 'Add',
   data () {
     return {
+      inputIndicator: 'Add new',
       forceReRenderKey: 0,
       location: 'CBA',
+      productNames: [],
       newLine: {
-        name: '',
-        trademark: '',
-        unitSize: '',
-        unitType: '',
-        quantity: '',
-        price: ''
+        name: null,
+        trademark: null,
+        unitSize: null,
+        unitType: null,
+        quantity: null,
+        price: null
       },
       bill: [{
         name: 'Snickers',
@@ -69,51 +74,52 @@ export default {
       }]
     }
   },
-  created: function () {
+  async created () {
     this.debouncer = debounce(function () {
       if (this.pushNeeded) {
         this.pushToBill()
       }
-    },
-    350)
+    }, 350)
+    await this.getOptions()
   },
   computed: {
     pushNeeded: function () {
-      return this.newLine.name !== '' && this.newLine.price !== ''
+      return this.newLine.name && this.newLine.price
     }
   },
   methods: {
     debouncer: function () {},
+    importFromInput (value) {
+      this.newLine.name = value
+    },
     async SendUpdate () {
       const MSG = {
         location: this.location,
         data: this.bill
       }
       try {
-        await axios.post(API_URL_ADD_SHOPPING, MSG)
+        await axios.post(URL.purchase.add, MSG)
       } catch (error) {
         console.log('err', error)
       }
-      this.location = ''
-      this.bill = [{
-        name: '',
-        trademark: '',
-        unitSize: '',
-        unitType: '',
-        quantity: '',
-        price: ''
-      }]
+      this.location = null
+      this.bill = [this.line]
     },
     pushToBill () {
       this.bill.push(this.newLine)
       this.newLine = {
-        name: '',
-        trademark: '',
-        unitSize: '',
-        unitType: '',
-        quantity: '',
-        price: ''
+        name: null,
+        trademark: null,
+        unitSize: null,
+        unitType: null,
+        quantity: null,
+        price: null
       }
+    },
+    async getOptions () {
+      const res = await axios.get(URL.product.getAllName)
+      this.productNames = res.data
+      this.productNames.push('Add new')
     }
   },
   watch: {
@@ -129,6 +135,9 @@ export default {
       },
       deep: true
     }
+  },
+  components: {
+    Input
   }
 }
 </script>

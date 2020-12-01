@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Test from '../views/Test.vue'
 import AddBill from '../views/addBill.vue'
 import Info from '../views/getInfo.vue'
+import Input from '../views/input.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/test',
     name: 'Test',
     component: Test
+  },
+  {
+    path: '/input',
+    name: 'Input',
+    component: Input
   }
 ]
 

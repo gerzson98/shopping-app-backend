@@ -14,7 +14,7 @@
         <option>Types</option> -->
       </select>
     </div>
-    <div v-if="moneySpent !== 0">
+    <div v-if="moneySpent > 0">
       <h1>Money spent; {{ moneySpent }}</h1>
     </div>
     <div>
@@ -24,7 +24,7 @@
           {{ item }}
         </option>
       </select>
-      <p v-if="cheapestLocation !== ''">So! {{ productName }} is cheapest at {{ cheapestLocation }}</p>
+      <p v-if="cheapestLocation">So! {{ productName }} is cheapest at {{ cheapestLocation }}</p>
     </div>
     <div v-for="(item, index) in products" :key="index">
       <p>Termék: {{ item.name }} Márkája: {{ item.trademark }} Eddig összesen vásárolva: {{ item.purchases }} db</p>
@@ -43,20 +43,18 @@ export default {
   data () {
     return {
       forceReRenderKey: 0,
-      url: {},
+      URL,
       moneySpent: 0,
-      productName: '',
+      productName: null,
       productNames: [],
-      cheapestLocation: '',
+      cheapestLocation: null,
       products: [],
       purchases: [],
       basedOn: 'Money',
-      favouriteShop: ''
+      favouriteShop: null
     }
   },
   async created () {
-    this.vm = this
-    this.url = URL
     await this.get(URL.product.getAllName, 'productNames')
   },
   methods: {
