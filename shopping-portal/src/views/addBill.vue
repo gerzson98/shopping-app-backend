@@ -18,52 +18,28 @@
           <option>kg</option>
           <option>l</option>
         </select>
-        <input class="inputBox" v-model="item.quantity" placeholder="Pieces" />
-        <input class="inputBox" v-model="item.price" placeholder="Price" />
+        <input class="inputBox" type="number" v-model="item.quantity" placeholder="Pieces" />
+        <input class="inputBox" type="number" v-model="item.price" placeholder="Price" />
       </div>
-      <div>
-        <Input @muted="importFromInput" :logicalIndicator="inputIndicator" :options="productNames" class="inputBox"/>
-        <input class="inputBox" v-model="newLine.trademark" placeholder="Trademark's name" />
-        <input class="inputBox" v-model="newLine.unitSize" placeholder="Unit size" />
-        <select class="inputBox" v-model="newLine.unitType">
-          <option>db</option>
-          <option>g</option>
-          <option>ml</option>
-          <option>kg</option>
-          <option>l</option>
-        </select>
-        <input class="inputBox" v-model="newLine.quantity" placeholder="Pieces" />
-        <input class="inputBox" v-model="newLine.price" placeholder="Price" />
-      </div>
+      <InputLine @pushNeeded="pushToBill" :pNames="productNames" />
       <div>
         <button id="submitButton" @click="SendUpdate()">Submit</button>
       </div>
-      <h1>NL name: {{ newLine.name }} NL Price: {{ newLine.price }}</h1>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import URL from '../services/URL.json'
-import Input from '../views/input'
-import debounce from 'lodash/debounce'
+import InputLine from '../components/inputLine.vue'
 
 export default {
   name: 'Add',
   data () {
     return {
       inputIndicator: 'Add new',
-      forceReRenderKey: 0,
       location: 'CBA',
       productNames: [],
-      newLine: {
-        name: null,
-        trademark: null,
-        unitSize: null,
-        unitType: null,
-        quantity: null,
-        price: null
-      },
       bill: [{
         name: 'Snickers',
         trademark: 'Snickers',
@@ -75,23 +51,9 @@ export default {
     }
   },
   async created () {
-    this.debouncer = debounce(function () {
-      if (this.pushNeeded) {
-        this.pushToBill()
-      }
-    }, 350)
-    await this.getOptions()
-  },
-  computed: {
-    pushNeeded: function () {
-      return this.newLine.name && this.newLine.price
-    }
+    await this.getPNames()
   },
   methods: {
-    debouncer: function () {},
-    importFromInput (value) {
-      this.newLine.name = value
-    },
     async SendUpdate () {
       const MSG = {
         location: this.location,
@@ -103,11 +65,7 @@ export default {
         console.log('err', error)
       }
       this.location = null
-      this.bill = [this.line]
-    },
-    pushToBill () {
-      this.bill.push(this.newLine)
-      this.newLine = {
+      this.bill = {
         name: null,
         trademark: null,
         unitSize: null,
@@ -116,19 +74,16 @@ export default {
         price: null
       }
     },
-    async getOptions () {
+    pushToBill (line) {
+      this.bill.push(line)
+    },
+    async getPNames () {
       const res = await axios.get(URL.product.getAllName)
-      this.productNames = res.data
+      this.productNames = res.data.sort()
       this.productNames.push('Add new')
     }
   },
   watch: {
-    adat: {
-      immediate: true,
-      handler: function () {
-        this.forceReRenderKey++
-      }
-    },
     newLine: {
       handler: function () {
         this.debouncer()
@@ -137,7 +92,7 @@ export default {
     }
   },
   components: {
-    Input
+    InputLine
   }
 }
 </script>

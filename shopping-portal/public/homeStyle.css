@@ -10,8 +10,20 @@
   text-decoration-color: red;
 }
 
+div.inputBox{
+  width: 100%;
+  display: table;
+  table-layout: fixed;
+}
+Input.inputBox{
+  margin: 5px;
+  display: table-cell;
+  vertical-align: middle;
+}
 .inputBox {
   margin: 5px;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 div.home {

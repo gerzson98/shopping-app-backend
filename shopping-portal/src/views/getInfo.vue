@@ -1,8 +1,8 @@
 <template>
   <div class="info">
     <div>
-      <button @click="get(url.product.getAll, 'products')">Let's see what products we have</button>
-      <button @click="get(url.purchase.getAll, 'purchases')">Let's see what purchases we have</button>
+      <button @click="get(URL.product.getAll, 'products')">Let's see what products we have</button>
+      <button @click="get(URL.purchase.getAll, 'purchases')">Let's see what purchases we have</button>
     </div>
       <h1>Favourite shop: {{ favouriteShop }}</h1>
     <div style="display: table;">
@@ -43,7 +43,7 @@ export default {
   data () {
     return {
       forceReRenderKey: 0,
-      URL,
+      URL: URL,
       moneySpent: 0,
       productName: null,
       productNames: [],

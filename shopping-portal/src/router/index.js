@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Test from '../views/Test.vue'
 import AddBill from '../views/addBill.vue'
 import Info from '../views/getInfo.vue'
-import Input from '../views/input.vue'
+import Input from '../components/inputField.vue'
 
 Vue.use(VueRouter)
 
@@ -25,7 +25,7 @@ const routes = [
   },
   {
     path: '/input',
-    name: 'Input',
+    name: 'InputField',
     component: Input
   }
 ]

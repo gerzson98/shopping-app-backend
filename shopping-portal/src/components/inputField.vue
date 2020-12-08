@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <div v-if="isInput">
-      <input v-model="chosenName" type="text">
-    </div>
-    <div v-else>
-      <select v-model="chosenName">
-        <option v-for="(item, index) in optionList" :key="index">{{ item }}</option>
-      </select>
-    </div>
+  <div v-if="isInput">
+    <input v-model="chosenName" type="text">
+  </div>
+  <div v-else>
+    <select v-model="chosenName">
+      <option v-for="(item, index) in optionList" :key="index">{{ item }}</option>
+    </select>
   </div>
 </template>
 
@@ -16,7 +14,7 @@
 import debounce from 'lodash/debounce'
 
 export default {
-  name: 'Input',
+  name: 'inputField',
   data () {
     return {
       isInput: false,
@@ -37,7 +35,6 @@ export default {
   },
   computed: {
     addIndicator: function () {
-      console.log(this.logicalIndicator)
       return this.logicalIndicator
     },
     optionList: function () {
@@ -52,7 +49,9 @@ export default {
           this.chosenName = null
           this.isInput = true
         }
-        if (this.isInput && this.chosenName === '') this.isInput = false
+        if (this.isInput && this.chosenName === '') {
+          this.isInput = false
+        }
         this.$emit('muted', this.chosenName)
       }
     }
