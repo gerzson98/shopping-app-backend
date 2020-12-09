@@ -61,21 +61,28 @@ export default {
       }
       try {
         await axios.post(URL.purchase.add, MSG)
+        this.location = null
+        this.bill = [{
+          name: null,
+          trademark: null,
+          unitSize: null,
+          unitType: null,
+          quantity: null,
+          price: null
+        }]
       } catch (error) {
         console.log('err', error)
       }
-      this.location = null
-      this.bill = {
-        name: null,
-        trademark: null,
-        unitSize: null,
-        unitType: null,
-        quantity: null,
-        price: null
-      }
+    },
+    validate (line) {
+      if (!line.trademark) line.trademark = this.location
+      if (!line.unitSize) line.unitSize = 1
+      if (!line.unitType) line.unitType = 'db'
+      if (!line.quantity) line.quantity = 1
+      return line
     },
     pushToBill (line) {
-      this.bill.push(line)
+      this.bill.push(this.validate(line))
     },
     async getPNames () {
       const res = await axios.get(URL.product.getAllName)

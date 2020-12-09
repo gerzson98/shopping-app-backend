@@ -3,8 +3,8 @@
     <div>
       <button @click="get(url.product.getAll, 'products')">Let's see what products we have</button>
       <button @click="get(url.purchase.getAll, 'purchases')">Let's see what purchases we have</button>
-      <button @click="get(url.purchase.erase, 'trash')">Delete purchase</button>
-      <button @click="get(url.purchase.erase, 'trash')">Delete products</button>
+      <button @click="truncate(url.purchase.erease)">Delete purchase</button>
+      <button @click="truncate(url.product.erease)">Delete products</button>
     </div>
     <div v-for="(item, index) in products" :key="index">
       <p>Termék: {{ item.name }} Márkája: {{ item.trademark }} Eddig összesen vásárolva: {{ item.purchases }} db</p>
@@ -57,6 +57,9 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    async truncate (apiUrl) {
+      await axios.post(apiUrl)
     }
   },
   watch: {
