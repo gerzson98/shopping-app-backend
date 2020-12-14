@@ -8,6 +8,7 @@
     </select>
     <input type="number" v-model="lineData.quantity" placeholder="Pieces" class="cell" />
     <input type="number" v-model="lineData.price" placeholder="Price" class="cell" />
+    <button @click="requestDelete">Del</button>
   </div>
 </template>
 
@@ -29,7 +30,10 @@ export default {
     }
   },
   methods: {
-    debouncer: function () {}
+    debouncer: function () {},
+    requestDelete: function () {
+      this.$emit('requestDelete')
+    }
   },
   watch: {
     lineData: {

@@ -8,7 +8,7 @@
       Purchased stuff;
     </p>
     <div class="container">
-      <bill-line v-for="(item, index) in bill" :key="index" :lineData="item" @muted="Refresh(index)" />
+      <bill-line v-for="(item, index) in bill" :key="index" :lineData="item" @muted="Refresh(index)" @requestDelete="delMethod(index)" />
       <input-line @pushNeeded="pushToBill" :pNames="productNames" />
     </div>
       <div>
@@ -66,6 +66,9 @@ export default {
     },
     Refresh (value, index) {
       this.bill[index] = value
+    },
+    delMethod (index) {
+      this.bill.splice(index, 1)
     },
     validate (line) {
       if (!line.trademark) line.trademark = this.location
