@@ -10,20 +10,17 @@
   text-decoration-color: red;
 }
 
-div.inputBox{
-  width: 100%;
+.container {
   display: table;
+  width: 100%;
+}
+.row {
+  width: 100%;
+  display: table-row;
+}
+.cell {
+  display: table-cell;
   table-layout: fixed;
-}
-Input.inputBox{
-  margin: 5px;
-  display: table-cell;
-  vertical-align: middle;
-}
-.inputBox {
-  margin: 5px;
-  display: table-cell;
-  vertical-align: middle;
 }
 
 div.home {
@@ -51,7 +48,7 @@ link {
 }
 
 div {
-  background-color: lightgreen;
+  background-color: lightgrey;
 }
 
 label {

@@ -1,27 +1,16 @@
 <template>
   <div class="addBill">
-    <div class="inputBox">
+    <div>
       <p>Shop: </p>
-      <input class="inputBox" v-model="location" placeholder="Location" />
+      <input v-model="location" placeholder="Location" />
     </div>
     <p>
       Purchased stuff;
     </p>
-      <div class="inputBox" v-for="(item, index) in bill" :key="index">
-        <input class="inputBox" v-model="item.name" placeholder="Product name" />
-        <input class="inputBox" v-model="item.trademark" placeholder="Trademark's name" />
-        <input class="inputBox" v-model="item.unitSize" placeholder="Unit size" />
-        <select class="inputBox" v-model="item.unitType">
-          <option>db</option>
-          <option>g</option>
-          <option>ml</option>
-          <option>kg</option>
-          <option>l</option>
-        </select>
-        <input class="inputBox" type="number" v-model="item.quantity" placeholder="Pieces" />
-        <input class="inputBox" type="number" v-model="item.price" placeholder="Price" />
-      </div>
-      <InputLine @pushNeeded="pushToBill" :pNames="productNames" />
+    <div class="container">
+      <bill-line v-for="(item, index) in bill" :key="index" :lineData="item" @muted="Refresh(index)" />
+      <input-line @pushNeeded="pushToBill" :pNames="productNames" />
+    </div>
       <div>
         <button id="submitButton" @click="SendUpdate()">Submit</button>
       </div>
@@ -32,6 +21,7 @@
 import axios from 'axios'
 import URL from '../services/URL.json'
 import InputLine from '../components/inputLine.vue'
+import BillLine from '../components/billLine.vue'
 
 export default {
   name: 'Add',
@@ -74,6 +64,9 @@ export default {
         console.log('err', error)
       }
     },
+    Refresh (value, index) {
+      this.bill[index] = value
+    },
     validate (line) {
       if (!line.trademark) line.trademark = this.location
       if (!line.unitSize) line.unitSize = 1
@@ -99,7 +92,8 @@ export default {
     }
   },
   components: {
-    InputLine
+    InputLine,
+    BillLine
   }
 }
 </script>

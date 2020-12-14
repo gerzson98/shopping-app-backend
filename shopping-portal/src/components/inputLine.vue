@@ -1,13 +1,13 @@
 <template>
-  <div class="inputBox">
-    <Input @muted="gotName" :options="pNames" class="inputBox" placeholder="Product name" />
-    <Input @muted="gotTrademark" :options="trademarksToSend" class="inputBox" placeholder="Trademark's name" />
-    <input class="inputBox" v-model="lineData.unitSize" placeholder="Unit size" />
-    <select class="inputBox" v-model="lineData.unitType">
-      <option v-for="item in types" :key="item">{{ item }}</option>
+  <div class="container">
+    <Input @muted="gotName" :options="pNames" placeholder="Product name" class="cell" />
+    <Input @muted="gotTrademark" :options="trademarksToSend" placeholder="Trademark's name" class="cell" />
+    <input v-model="lineData.unitSize" placeholder="Unit size" class="cell" />
+    <select v-model="lineData.unitType" class="cell">
+      <option v-for="item in types" :key="item" class="cell">{{ item }}</option>
     </select>
-    <input class="inputBox" type="number" v-model="lineData.quantity" placeholder="Pieces" />
-    <input class="inputBox" type="number" v-model="lineData.price" placeholder="Price" />
+    <input type="number" v-model="lineData.quantity" placeholder="Pieces" class="cell" />
+    <input type="number" v-model="lineData.price" placeholder="Price" class="cell" />
   </div>
 </template>
 
