@@ -159,6 +159,20 @@ class ProductFunctions {
     }
   }
 
+  async getTrademarks (productName) {
+    const query = new QueryFunctions()
+    const queryString = query.getByPrefs('products', ['trademark'], [{column: 'name', value: productName}])
+    try {
+      const result = await db().query(queryString)
+      return result
+    } catch (error) {
+      return error
+    } finally {
+      db().close()
+    }
+  }
+
+
   // async getProductByName(name){
   //   if(!(name === null) && name != undefined){
   //     const queryString = `SELECT * FROM products WHERE name = '${name}'`

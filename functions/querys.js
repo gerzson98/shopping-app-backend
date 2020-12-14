@@ -41,7 +41,7 @@
         if (!conditions[i].operator) {
           queryString += `${conditions[i].column} = '${conditions[i].value}'`
         } else {
-          queryString += `${conditions[i].column} ${conditions[i].operator} '${conditions[i].vale}'`
+          queryString += `${conditions[i].column} ${conditions[i].operator} '${conditions[i].value}'`
         }
         if (i === lastIndex) {
           queryString += ';'

@@ -2,6 +2,7 @@
   "product": {
     "getAll": "http://localhost:5000/product/getallproducts",
     "getAllName": "http://localhost:5000/product/getallnames",
+    "getTrademark": "http://localhost:5000/product/gettrademarks",
     "erease": "http://localhost:5000/product/erase"
   },
   "purchase": {

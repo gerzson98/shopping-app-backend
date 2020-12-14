@@ -18,8 +18,6 @@ export default {
   data () {
     return {
       isInput: false,
-      forceReRenderKey: 0,
-      productNames: [],
       chosenName: null
     }
   },
@@ -29,6 +27,9 @@ export default {
         this.pushToBill()
       }
     }, 350)
+  },
+  mounted () {
+    console.table(this.options)
   },
   methods: {
     debouncer: function () {}

@@ -1,14 +1,10 @@
 <template>
   <div class="inputBox">
-    <Input @muted="gotName"  :options="pNames" class="inputBox" placeholder="Product name" />
-    <input class="inputBox" v-model="lineData.trademark" placeholder="Trademark's name" />
+    <Input @muted="gotName" :options="pNames" class="inputBox" placeholder="Product name" />
+    <Input @muted="gotTrademark" :options="trademarksToSend" class="inputBox" placeholder="Trademark's name" />
     <input class="inputBox" v-model="lineData.unitSize" placeholder="Unit size" />
     <select class="inputBox" v-model="lineData.unitType">
-      <option>db</option>
-      <option>g</option>
-      <option>ml</option>
-      <option>kg</option>
-      <option>l</option>
+      <option v-for="item in types" :key="item">{{ item }}</option>
     </select>
     <input class="inputBox" type="number" v-model="lineData.quantity" placeholder="Pieces" />
     <input class="inputBox" type="number" v-model="lineData.price" placeholder="Price" />
@@ -17,8 +13,8 @@
 
 <script>
 
-// import axios from 'axios'
-// import URL from '../services/URL.json'
+import axios from 'axios'
+import URL from '../services/URL.json'
 import Input from '../components/inputField'
 import debounce from 'lodash/debounce'
 
@@ -34,6 +30,13 @@ export default {
         quantity: null,
         price: null
       },
+      types: [
+        'db',
+        'g',
+        'ml',
+        'kg',
+        'l'
+      ],
       trademarks: [],
       chosenName: null
     }
@@ -42,23 +45,31 @@ export default {
     debouncer: function () {},
     gotName: function (value) {
       this.lineData.name = value
-      /*
-      getTrademarks: async function (name) {
-        awios.post(URL.products.getTrademarks, name)
-          .then(response => {
-            this.trademarks = response.data
-          })
+      this.getTrademarks(URL.product.getTrademark, value)
+    },
+    gotTrademark: function (value) {
+      this.lineData.trademark = value
+    },
+    getTrademarks: async function (name) {
+      const MSG = {
+        msg: name
       }
-      */
+      axios.post(URL.product.getTrademark, MSG)
+        .then(response => {
+          this.trademarks = []
+          response.data.forEach(element => {
+            this.trademarks.push(element.trademark)
+          })
+          this.trademarks.push('Add new')
+        })
     }
   },
   computed: {
     pushNeeded: function () {
-      if (this.lineData.name !== null && this.lineData.name !== this.logicalIndicator && this.lineData.price !== 0 && this.lineData.price !== null) {
-        return true
-      } else {
-        return false
-      }
+      return this.lineData.name !== null && this.lineData.name !== this.logicalIndicator && this.lineData.price !== 0 && this.lineData.price !== null
+    },
+    trademarksToSend: function () {
+      return this.trademarks
     }
   },
   watch: {
@@ -78,13 +89,14 @@ export default {
         }
       }, 350),
       deep: true
-    } /* ,
-    lineData.name: {
+    },
+    'lineData.name': {
       immediate: true,
-      handler: async function () {
-        await getTrademarks ()
-      }
-    } */
+      handler: async function (value) {
+        await this.getTrademarks(value)
+      },
+      deep: true
+    }
   },
   components: {
     Input

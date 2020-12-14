@@ -33,4 +33,10 @@ exports.deleteAllProducts = asyncHelper(async (request, response) => {
   response.status(200).json({})
 })
 
+exports.getTrademarks = asyncHelper(async (request, response) => {
+  const productFunctions = new ProductFunctions()
+  const result = await productFunctions.getTrademarks(request.body.msg)
+  response.status(200).json(result)
+})
+
 
