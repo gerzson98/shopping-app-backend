@@ -1,5 +1,5 @@
 <template>
-  <div class="info">
+  <div class="view">
     <div>
       <button @click="get(URL.product.getAll, 'products')">Let's see what products we have</button>
       <button @click="get(URL.purchase.getAll, 'purchases')">Let's see what purchases we have</button>

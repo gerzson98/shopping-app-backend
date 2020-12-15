@@ -1,18 +1,18 @@
 <template>
   <div class="view">
     <div>
-      <p>Shop: </p>
+      <p>Planned location(not necessary): </p>
       <input v-model="location" placeholder="Location" />
     </div>
     <p>
-      Purchased stuff;
+      Planning to buy;
     </p>
     <div class="container">
-      <bill-line v-for="(item, index) in bill" :key="index" :lineData="item" :parent="'addBill'" @muted="Refresh(index)" @requestDelete="delMethod(index)" />
-      <input-line @pushNeeded="pushToBill" :pNames="productNames" :parent="'addBill'" />
+      <bill-line v-for="(item, index) in bill" :key="index" :lineData="item" :parent="'List'" @muted="Refresh(index)" @requestDelete="delMethod(index)" />
+      <input-line @pushNeeded="pushToBill" :pNames="productNames" :parent="'List'" />
     </div>
       <div>
-        <button id="submitButton" @click="SendUpdate()">Submit</button>
+        <button id="submitButton" @click="SendUpdate()">Save</button>
       </div>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
   data () {
     return {
       inputIndicator: 'Add new',
-      location: 'CBA',
+      location: null,
       productNames: [],
       bill: [{
         name: 'Snickers',
@@ -46,22 +46,27 @@ export default {
   methods: {
     async SendUpdate () {
       const MSG = {
-        location: this.location,
-        data: this.bill
+        msg: this.bill
       }
       try {
-        await axios.post(URL.purchase.add, MSG)
-        this.location = null
-        this.bill = [{
-          name: null,
-          trademark: null,
-          unitSize: null,
-          unitType: null,
-          quantity: null,
-          price: null
-        }]
+        const answer = await axios.post(URL.list.addList, MSG)
+        if (answer.status === 200) {
+          alert('Your save was succesfull!')
+          this.location = null
+          this.bill = [{
+            name: null,
+            trademark: null,
+            unitSize: null,
+            unitType: null,
+            quantity: null,
+            price: null
+          }]
+        } else {
+          alert('Ooops something went wrong!\n If you have experienced this multiple times, it is an error at us!\nWe will work on it! Promise!')
+        }
       } catch (error) {
-        console.log('err', error)
+        alert('err', error)
+        console.log(error)
       }
     },
     Refresh (value, index) {

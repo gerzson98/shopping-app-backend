@@ -7,7 +7,7 @@
       <option v-for="item in types" :key="item">{{ item }}</option>
     </select>
     <input type="number" v-model="lineData.quantity" placeholder="Pieces" class="cell" />
-    <input type="number" v-model="lineData.price" placeholder="Price" class="cell" />
+    <input v-if="parent === 'addBill'" type="number" v-model="lineData.price" placeholder="Price" class="cell" />
     <button @click="requestDelete">Del</button>
   </div>
 </template>
@@ -47,6 +47,10 @@ export default {
   props: {
     lineData: {
       type: Object,
+      requiered: true
+    },
+    parent: {
+      type: String,
       requiered: true
     }
   }

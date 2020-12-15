@@ -28,9 +28,6 @@ export default {
       }
     }, 350)
   },
-  mounted () {
-    console.table(this.options)
-  },
   methods: {
     debouncer: function () {}
   },

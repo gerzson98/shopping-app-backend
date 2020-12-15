@@ -2,13 +2,16 @@
   <div class="home" :key="forceReRenderKey">
     <nav class="mainMenu">
       <div class="mainMenu">
-      <router-link class="mainMenu" :to="{ name: 'Test' }">Let's go testing shiet</router-link>
-      </div>
-      <div class="mainMenu">
       <router-link class="mainMenu" :to="{ name: 'Add' }">Add another bill</router-link>
       </div>
       <div class="mainMenu">
       <router-link class="mainMenu" :to="{ name: 'Info' }">Lets see some computed data</router-link>
+      </div>
+      <div class="mainMenu">
+      <router-link class="mainMenu" :to="{ name: 'AddList' }">Add a new shopping list!</router-link>
+      </div>
+      <div class="mainMenu">
+      <router-link class="mainMenu" :to="{ name: 'List' }">Let's check our shopping list!</router-link>
       </div>
     </nav>
     <router-view/>

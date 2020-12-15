@@ -1,15 +1,21 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Test from '../views/Test.vue'
-import AddBill from '../views/addBill.vue'
 import Info from '../views/getInfo.vue'
-import Input from '../components/inputField.vue'
+import List from '../views/shoppingList.vue'
+import AddBill from '../views/addBill.vue'
+import AddList from '../views/addList.vue'
+import VueRouter from 'vue-router'
+// import LogIn from '../views/logIn.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  // {
+  //   path: '/',
+  //   name: 'LogIn',
+  //   component: LogIn
+  // },
   {
-    path: '/',
+    path: '/add-bill',
     name: 'Add',
     component: AddBill
   },
@@ -19,14 +25,14 @@ const routes = [
     component: Info
   },
   {
-    path: '/test',
-    name: 'Test',
-    component: Test
+    path: '/list',
+    name: 'List',
+    component: List
   },
   {
-    path: '/input',
-    name: 'InputField',
-    component: Input
+    path: '/list-adder',
+    name: 'AddList',
+    component: AddList
   }
 ]
 

@@ -1,6 +1,26 @@
-
 * {
-  margin: 10px;
+  border-collapse: collapse;
+}
+
+link {
+  text-decoration-color: snow;
+}
+
+div {
+  background-color: lightgrey;
+}
+
+label {
+  color: black;
+}
+
+input {
+  background-color: white;
+}
+
+button {
+  border: 2px solid darkgreen;
+  border-radius: 4px;
 }
 
 .mainMenu {
@@ -28,6 +48,10 @@ div.home {
   height: 100%;
 }
 
+div.view {
+  width: 100%;
+}
+
 nav.mainMenu {
   width: 100%;
   display: table;
@@ -37,31 +61,33 @@ nav.mainMenu {
 div.mainMenu {
   background-color: grey;
   height: 50px;
-  border: 2px solid salmon;
+  border: 2px solid maroon;
   margin: 10px;
   display: table-cell;
   vertical-align: middle;
 }
 
-link {
-  text-decoration-color: snow;
+.shoppingList {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
-div {
-  background-color: lightgrey;
+table.shoppingList {
+  margin: 2%;
 }
 
-label {
-  color: black;
+div.shoppingList {
+  width: 100%;
+  align-items: center;
 }
 
-input {
-  background-color: white;
+caption, table, th, tr.shoppingList {
+  border: 1px solid maroon;
+  border-collapse: collapse;
 }
 
-button {
-  border: 2px solid darkgreen;
-  border-radius: 4px;
+caption.shoppingList {
+  font-size: 130%;
+  background-color: lightslategray;
 }
 
 #submitButton {
@@ -70,12 +96,4 @@ button {
   align-items: center;
   height: 30px;
   width: 80%;
-}
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
 }

@@ -14,5 +14,9 @@
     "allSpent": "http://localhost:5000/purchases/spent",
     "favShop": "http://localhost:5000/purchases/favshop",
     "cheapest": "http://localhost:5000/product/cheap"
+  },
+  "list": {
+    "addList": "http://localhost:5000/list/addlist",
+    "getList": "http://localhost:5000/list/getlist"
   }
 }

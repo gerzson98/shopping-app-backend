@@ -7,7 +7,7 @@
       <option v-for="item in types" :key="item" class="cell">{{ item }}</option>
     </select>
     <input type="number" v-model="lineData.quantity" placeholder="Pieces" class="cell" />
-    <input type="number" v-model="lineData.price" placeholder="Price" class="cell" />
+    <input v-if="parent === 'addBill'" type="number" v-model="lineData.price" placeholder="Price" class="cell" />
   </div>
 </template>
 
@@ -66,7 +66,12 @@ export default {
   },
   computed: {
     pushNeeded: function () {
-      return this.lineData.name !== null && this.lineData.name !== this.logicalIndicator && this.lineData.price !== 0 && this.lineData.price !== null
+      if (this.parent === 'addBill') return this.lineData.name !== null && this.lineData.name !== this.logicalIndicator && this.lineData.price !== 0 && this.lineData.price !== null
+      else if (this.parent === 'List') return this.lineData.name !== null && this.lineData.name !== this.logicalIndicator && this.lineData.trademark !== this.logicalIndicator && this.lineData.trademark !== null
+      else {
+        console.log('pushNeeded is not setup for this parent in inputLine.vue.')
+        return false
+      }
     },
     trademarksToSend: function () {
       return this.trademarks
@@ -108,6 +113,10 @@ export default {
     },
     pNames: {
       type: Array,
+      requiered: true
+    },
+    parent: {
+      type: String,
       requiered: true
     }
   }
