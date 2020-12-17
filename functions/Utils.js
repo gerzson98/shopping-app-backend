@@ -91,6 +91,25 @@
    }
    return true
   }
+
+  metricSimplify (unitType, quantity) {
+    if (quantity / 500 < 1) return {unitType, quantity}
+    else {
+      switch (unitType) {
+        case 'g':
+          unitType = 'kg'
+          quantity /= 1000
+          break;
+        case 'ml':
+          unitType = 'l'
+          quantity /= 1000
+          break;
+        default:
+          break;
+      }
+      return {unitType, quantity}
+    }
+  }
  }
 
 

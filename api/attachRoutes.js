@@ -1,5 +1,5 @@
 'use strict' 
-const { getAllProduct, deleteAllProducts, getProductsNames, getCheapest, getTrademarks} = require('./controllers/productController')
+const { getAllProduct, deleteAllProducts, getProductsNames, getCheapest, getTrademarks } = require('./controllers/productController')
 const { addNewShopping, getAllPurchases , deleteAll, seeSpending, getFavShop} = require('./controllers/purchaseController')
 const { addList, getList } = require('./controllers/ListController')
 
