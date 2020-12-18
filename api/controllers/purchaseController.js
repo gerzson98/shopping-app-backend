@@ -1,18 +1,25 @@
 'use strict'
 
 const asyncHelper = require('../middleware/async')
-const { PurchaseFunctions } = require('../../functions/PurchaseFunctions')
-const { ProductFunctions } = require('../../functions/ProductFunctions')
-const { ConvertFunctions } = require('../../functions/Convert')
 const { UtilFunctions } = require('../../functions/Utils')
+const { ConvertFunctions } = require('../../functions/Convert')
+const { ListFunctions } = require('../../functions/ListFunctions')
+const { ProductFunctions } = require('../../functions/ProductFunctions')
+const { PurchaseFunctions } = require('../../functions/PurchaseFunctions')
 
 exports.addNewShopping = asyncHelper(async (request, response) => {
-  const purchaseFunctions = new PurchaseFunctions()
-  const productFunctions = new ProductFunctions()
-  const convert = new ConvertFunctions()
   const utils = new UtilFunctions()
+  const convert = new ConvertFunctions()
+  const listFunctions = new ListFunctions()
+  const productFunctions = new ProductFunctions()
+  const purchaseFunctions = new PurchaseFunctions()
   const data = request.body.data
   const location = request.body.location
+  try {
+    await listFunctions.listChecker(data)
+  } catch (err) {
+    console.error(err)
+  }
   try {
     if (Array.isArray(data)) {
       for (let i = 0; i < data.length; ++i) {

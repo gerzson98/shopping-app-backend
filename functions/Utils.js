@@ -36,6 +36,28 @@
     return element
   }
 
+  stringSimplify (string) {
+    string = string.toLowerCase()
+    let tmp = string.split('')
+    for (let i = 0; i < string.length; ++i) {
+      let char = tmp[i]
+      switch (char) {
+        case ' ':
+          tmp.splice(i, 1)
+          i--
+          break;
+        case '\'':
+          tmp.splice(i, 1)
+          i--
+          break;
+        default:
+          break;
+      }
+    }
+    string = tmp.join('')
+    return string
+  }
+
   metricDefaulter (unitType, unitSize, quantity) {
     switch (unitType) {
       case 'kg':
@@ -112,5 +134,4 @@
   }
  }
 
-
- exports.UtilFunctions = UtilFunctions
+exports.UtilFunctions = UtilFunctions

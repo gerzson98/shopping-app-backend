@@ -1,5 +1,7 @@
 'use strict'
 
+const { UtilFunctions } = require('./Utils')
+
 /**
  * @typedef ConvertFunctions
  */
@@ -30,6 +32,19 @@
     })
     return data;
   }
+
+  fromBEtoLE (billE) {
+    const util = new UtilFunctions()
+    const metrics = util.metricDefaulter(billE.unitType, billE.unitSize, billE.quantity)
+    if (!billE.trademark) billE.trademark = 'not_given'
+    return {
+      name: util.stringSimplify(billE.name),
+      trademark: util.stringSimplify(billE.trademark),
+      unitType: metrics.unitType,
+      quantity: metrics.quantity
+    }
+  }
+
  }
 
  exports.ConvertFunctions = ConvertFunctions

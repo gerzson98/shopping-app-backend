@@ -60,8 +60,10 @@ export default {
           quantity: null,
           price: null
         }]
+        alert('Succesfull upload!')
       } catch (error) {
-        console.log('err', error)
+        alert('err', error)
+        console.log(error)
       }
     },
     Refresh (value, index) {

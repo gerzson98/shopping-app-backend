@@ -1,9 +1,5 @@
 <template>
   <div class="view">
-    <div>
-      <p>Planned location(not necessary): </p>
-      <input v-model="location" placeholder="Location" />
-    </div>
     <p>
       Planning to buy;
     </p>
@@ -28,7 +24,6 @@ export default {
   data () {
     return {
       inputIndicator: 'Add new',
-      location: null,
       productNames: [],
       bill: [{
         name: 'Snickers',
@@ -52,7 +47,6 @@ export default {
         const answer = await axios.post(URL.list.addList, MSG)
         if (answer.status === 200) {
           alert('Your save was succesfull!')
-          this.location = null
           this.bill = [{
             name: null,
             trademark: null,
@@ -76,7 +70,7 @@ export default {
       this.bill.splice(index, 1)
     },
     validate (line) {
-      if (!line.trademark) line.trademark = this.location
+      if (!line.trademark) line.trademark = 'not_given'
       if (!line.unitSize) line.unitSize = 1
       if (!line.unitType) line.unitType = 'db'
       if (!line.quantity) line.quantity = 1

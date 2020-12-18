@@ -65,6 +65,7 @@ export default {
             this.$data[destination] = response.data
           })
       } catch (error) {
+        alert('err', error)
         console.log(error)
       }
     },
@@ -78,6 +79,7 @@ export default {
             this.$data[destination] = response.data
           })
       } catch (error) {
+        alert('err', error)
         console.log(error)
       }
     }
