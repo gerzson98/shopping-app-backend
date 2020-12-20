@@ -9,10 +9,29 @@ const { ConvertFunctions } = require('./Convert')
  * @typedef ListFunctions
  */
 class ListFunctions {
-  async getList(){
-    const queryString = 'SELECT * FROM list'
+  async getList() {
+    const queryString = 'SELECT * FROM shopping_app.list;'
     try {
       return await db().query(queryString)
+    } catch (error) {
+      return error
+    } finally {
+      db().close()
+    }
+  }
+
+  async updateList (list) {
+    try {
+      await db().query('TRUNCATE TABLE shopping_app.list;')
+      for (let el in list) {
+        try {
+          await this.upLoadListElement(el)
+        } catch (error) {
+          return error
+        } finally {
+          db().close()
+        }
+      }
     } catch (error) {
       return error
     } finally {

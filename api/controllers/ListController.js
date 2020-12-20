@@ -44,3 +44,9 @@ exports.getList = asyncHelper(async (request, response) => {
   }
   response.status(200).json(answer)
 })
+
+exports.updateList = asyncHelper(async (request, response) => {
+  const listFunctions = new ListFunctions() 
+  const result = await listFunctions.updateList(request.body)
+  response.status(200).json(result)
+})

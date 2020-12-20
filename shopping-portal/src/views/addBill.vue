@@ -8,7 +8,7 @@
       Purchased stuff;
     </p>
     <div class="container">
-      <bill-line v-for="(item, index) in bill" :key="index" :lineData="item" :parent="'addBill'" @muted="Refresh(index)" @requestDelete="delMethod(index)" />
+      <bill-line v-for="(item, index) in bill" :key="index" :lineData="item" :parent="'addBill'" @muted="item = $event" @requestDelete="delMethod(index)" />
       <input-line @pushNeeded="pushToBill" :pNames="productNames" :parent="'addBill'" />
     </div>
       <div>

@@ -2,7 +2,7 @@
   <div>
     <input v-model="lineData.name" placeholder="Product name" class="cell" />
     <input v-model="lineData.trademark" placeholder="Trademark's name" class="cell" />
-    <input v-model="lineData.unitSize" placeholder="Unit size" class="cell" />
+    <input v-if="parent !== 'shoppingList'" v-model="lineData.unitSize" placeholder="Unit size" class="cell" />
     <select v-model="lineData.unitType" class="cell">
       <option v-for="item in types" :key="item">{{ item }}</option>
     </select>

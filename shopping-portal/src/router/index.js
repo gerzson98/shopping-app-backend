@@ -4,16 +4,16 @@ import List from '../views/shoppingList.vue'
 import AddBill from '../views/addBill.vue'
 import AddList from '../views/addList.vue'
 import VueRouter from 'vue-router'
-// import LogIn from '../views/logIn.vue'
+import LogIn from '../views/loginPage.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'LogIn',
-  //   component: LogIn
-  // },
+  {
+    path: '/',
+    name: 'LogIn',
+    component: LogIn
+  },
   {
     path: '/add-bill',
     name: 'Add',

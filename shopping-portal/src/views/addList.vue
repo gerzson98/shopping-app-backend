@@ -4,7 +4,7 @@
       Planning to buy;
     </p>
     <div class="container">
-      <bill-line v-for="(item, index) in bill" :key="index" :lineData="item" :parent="'List'" @muted="Refresh(index)" @requestDelete="delMethod(index)" />
+      <bill-line v-for="(item, index) in list" :key="index" :lineData="item" :parent="'List'" @muted="item = $event" @requestDelete="delMethod(index)" />
       <input-line @pushNeeded="pushToBill" :pNames="productNames" :parent="'List'" />
     </div>
       <div>
@@ -25,14 +25,7 @@ export default {
     return {
       inputIndicator: 'Add new',
       productNames: [],
-      bill: [{
-        name: 'Snickers',
-        trademark: 'Snickers',
-        unitSize: 50,
-        unitType: 'g',
-        quantity: 1,
-        price: 200
-      }]
+      list: []
     }
   },
   async created () {
@@ -41,13 +34,13 @@ export default {
   methods: {
     async SendUpdate () {
       const MSG = {
-        msg: this.bill
+        msg: this.list
       }
       try {
         const answer = await axios.post(URL.list.addList, MSG)
         if (answer.status === 200) {
           alert('Your save was succesfull!')
-          this.bill = [{
+          this.list = [{
             name: null,
             trademark: null,
             unitSize: null,
@@ -63,11 +56,8 @@ export default {
         console.log(error)
       }
     },
-    Refresh (value, index) {
-      this.bill[index] = value
-    },
     delMethod (index) {
-      this.bill.splice(index, 1)
+      this.list.splice(index, 1)
     },
     validate (line) {
       if (!line.trademark) line.trademark = 'not_given'
@@ -77,7 +67,7 @@ export default {
       return line
     },
     pushToBill (line) {
-      this.bill.push(this.validate(line))
+      this.list.push(this.validate(line))
     },
     async getPNames () {
       const res = await axios.get(URL.product.getAllName)

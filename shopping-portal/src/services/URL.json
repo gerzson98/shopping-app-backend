@@ -17,6 +17,10 @@
   },
   "list": {
     "addList": "http://localhost:5000/list/addlist",
-    "getList": "http://localhost:5000/list/getlist"
+    "getList": "http://localhost:5000/list/getlist",
+    "update": "http://localhost:5000/list/update"
+  },
+  "login": {
+    "pwcheck": "http://localhost:5000/login/pwcheck"
   }
 }

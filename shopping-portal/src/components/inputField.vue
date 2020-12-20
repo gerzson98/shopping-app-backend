@@ -1,9 +1,9 @@
 <template>
   <div v-if="isInput">
-    <input v-model="chosenName" type="text">
+    <input v-model="choice" type="text">
   </div>
   <div v-else>
-    <select v-model="chosenName">
+    <select v-model="choice">
       <option v-for="(item, index) in optionList" :key="index">{{ item }}</option>
     </select>
   </div>
@@ -17,8 +17,7 @@ export default {
   name: 'inputField',
   data () {
     return {
-      isInput: false,
-      chosenName: null
+      isInput: false
     }
   },
   created () {
@@ -40,17 +39,17 @@ export default {
     }
   },
   watch: {
-    chosenName: {
+    choice: {
       immediate: true,
       handler: function () {
-        if (this.chosenName === 'Add new') {
-          this.chosenName = null
+        if (this.choice === 'Add new') {
+          this.choice = null
           this.isInput = true
         }
-        if (this.isInput && this.chosenName === '') {
+        if (this.isInput && this.choice === '') {
           this.isInput = false
         }
-        this.$emit('muted', this.chosenName)
+        this.$emit('muted', this.choice)
       }
     }
   },
@@ -62,6 +61,10 @@ export default {
     options: {
       type: Array,
       requiered: true
+    },
+    choice: {
+      type: String,
+      default: null
     }
   }
 }

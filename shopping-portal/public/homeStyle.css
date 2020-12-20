@@ -87,7 +87,7 @@ div.shoppingList {
   align-items: center;
 }
 
-caption, table, th, tr.shoppingList {
+caption, table, th, tr, td.shoppingList {
   border: 1px solid maroon;
   border-collapse: collapse;
 }
