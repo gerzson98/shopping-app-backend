@@ -69,8 +69,7 @@ class ListFunctions {
     const idList = convert.resultToObject(result)
     if (idList[0] === undefined) {
       return 0
-    }
-    else {
+    } else {
       return idList[0].id
     }
   }

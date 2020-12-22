@@ -27,8 +27,7 @@ class ProductFunctions {
     try {
       const result = await db().query(queryString)
       return result
-    }
-    catch (err) {
+    } catch (err) {
       return err
     } finally {
       db().close()
@@ -39,8 +38,7 @@ class ProductFunctions {
     const queryString = 'TRUNCATE TABLE shopping_app.products;'
     try {
       await db().query(queryString)
-    }
-    catch (err) {
+    } catch (err) {
       return err
     } finally {
       db().close()
@@ -53,8 +51,7 @@ class ProductFunctions {
     try {
       const result = await db().query(queryString)
       return result
-    }
-    catch (err) {
+    } catch (err) {
       return err
     } finally {
       db().close()
@@ -80,8 +77,7 @@ class ProductFunctions {
     const queryString = `UPDATE products SET purchases = purchases + ${purchases} WHERE name = '${name}' AND trademark = '${trademark}';`
     try {
       await db().query(queryString)
-    }
-    catch (err) {
+    } catch (err) {
       return err
     } finally {
       db().close()
@@ -102,12 +98,12 @@ class ProductFunctions {
     const convert = new ConvertFunctions()
     const idArray = await this.getIdForCheapestShop(name)
     let pricesAndLocations = []
-    for (let i = 0; i < idArray.length; ++i) {
-      const queryString = query.getByPrefs('purchases', ['location', 'price'], [{column: 'product_id', value: idArray[i].product_id}])
+    for (let id in idArray) {
+      const queryString = query.getByPrefs('purchases', ['location', 'price'], [{column: 'product_id', value: id.product_id}])
       const answer = await db().query(queryString)
       const result = convert.resultToObject(answer)
-      for (let j = 0; j < result.length; ++j) {
-        pricesAndLocations.push(result[j])
+      for (let element in result) {
+        pricesAndLocations.push(element)
       } 
     }
     return pricesAndLocations
@@ -130,8 +126,7 @@ class ProductFunctions {
     const queryStringInsert = `INSERT INTO products (name, trademark, purchases) VALUES('${name}', '${trademark}', '${purchases}');`
     try {
       await db().query(queryStringInsert)
-    }
-    catch (err) {
+    } catch (err) {
       return err
     } finally {
       db().close()
@@ -147,12 +142,9 @@ class ProductFunctions {
       const length = JSON.parse(JSON.stringify(result)).length
       if (length === 0) {
         await this.addProduct(name, trademark, quantity)
-      } else {
-        await this.incrementPurchases(name, trademark, quantity)
-      }
+      } else await this.incrementPurchases(name, trademark, quantity)
       return await this.getProductID(name, trademark)
-    }
-    catch (err) {
+    } catch (err) {
       return err
     } finally {
       db().close()
@@ -174,15 +166,13 @@ class ProductFunctions {
 
 
   // async getProductByName(name){
-  //   if(!(name === null) && name != undefined){
-  //     const queryString = `SELECT * FROM products WHERE name = '${name}'`
+  //   if (!(name === null) && name != undefined) {
+  //     const queryString = `SELECT * FROM products WHERE name = '${name}';`
   //     try{
   //       return await db().query(queryString)
-  //     }
-  //     catch(err){
+  //     } catch(err){
   //       return new Error(err)
-  //     }
-  //     finally{
+  //     } finally{
   //       db().close()
   //     }
   //   }

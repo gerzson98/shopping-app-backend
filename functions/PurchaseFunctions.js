@@ -13,14 +13,13 @@ class PurchaseFunctions {
 
   async addNewShopping(product_id, location, price, unitType, unitSize, quantity){
     const queryStringAddPurchase = `INSERT INTO purchases (product_id, location, price, unit_size, unit_type, quantity, date) VALUES('${product_id}', '${location}', '${price}', '${unitSize}', '${unitType}', '${quantity}', CURDATE());`
+    
     try {
       await db().query(queryStringAddPurchase)
-    }
-    catch (err) {
+    } catch (err) {
       console.log(new Error(err))
       return new Error(err)
-    }
-    finally {
+    } finally {
       db().close()
     }
   }
@@ -41,22 +40,23 @@ class PurchaseFunctions {
   async getAllPurchases () {
     const querys = new QueryFunctions()
     const queryString = querys.getByPrefs('purchases')
+
     try {
       const result = await db().query(queryString)
       return result
-    }
-    catch (err) {
+    }  catch (err) {
       console.log(new Error(err))
       return new Error(err) 
-    }
-    finally {
+    } finally {
       db().close()
     }
   }
 
   async getFavShopData (by) {
-    let queryString = '';
     const querys = new QueryFunctions()
+
+    let queryString = '';
+
     if (by == 'Money') {
       queryString = querys.getByPrefs('purchases', ['location', 'quantity', 'price'])
     } else if (by == 'Quantity') {
@@ -68,12 +68,10 @@ class PurchaseFunctions {
       try {
         const result = await db().query(queryString)
         return result
-      }
-      catch (err) {
+      } catch (err) {
         console.log(new Error(err))
         return new Error(err) 
-      }
-      finally {
+      } finally {
         db().close()
       }
     } else {
@@ -85,13 +83,9 @@ class PurchaseFunctions {
   calculateFavShop (data) {
     const utils = new UtilFunctions()
 
-    let favShop = ''
     let shops = []
     let points = []
-      //Ehhez gecire nem maradt agyam megírni.
-      // if (request.body === 'Types') {
-      //   favShop = data[0].location
-      // } else
+
     if (!data[0].price) {
       data.forEach(purchase => {
         if (shops.includes(purchase.location)) {
@@ -102,7 +96,6 @@ class PurchaseFunctions {
           points.push(purchase.quantity)
         }
       })
-      favShop = utils.pickBest(shops, points)
     } else {
       data.forEach(purchase => {
         if (shops.includes(purchase.location)) {
@@ -113,21 +106,18 @@ class PurchaseFunctions {
           points.push(purchase.quantity * purchase.price)
         }
       })
-      favShop = utils.pickBest(shops, points)
     }
-    return favShop
+    return utils.pickBest(shops, points)
   }
 
   async deleteAll() {
     const queryString = 'TRUNCATE TABLE shopping_app.purchases;'
     try {
       await db().query(queryString)
-    }
-    catch (err) {
+    } catch (err) {
       console.log(new Error(err))
       return new Error(err)
-    }
-    finally {
+    } finally {
       db().close()
     }
   }

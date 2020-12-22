@@ -6,7 +6,7 @@
 
  class QueryFunctions {
   getAll (from) {
-    return `SELECT * FROM ${from}`
+    return `SELECT * FROM shopping_app.${from}`
   }
 
   add (e, arg) {
@@ -21,6 +21,7 @@
    */
   getByPrefs (table, columns, conditions) {
     let queryString = 'SELECT\n'
+
     if (!columns) {
       queryString += '*\n'
     } else {
@@ -37,16 +38,10 @@
       const lastIndex = conditions.length - 1
       queryString += '\nWHERE\n'
       for (let i = 0; i < conditions.length; ++i) {
-        if (!conditions[i].operator) {
-          queryString += `${conditions[i].column} = '${conditions[i].value}'`
-        } else {
-          queryString += `${conditions[i].column} ${conditions[i].operator} '${conditions[i].value}'`
-        }
-        if (i === lastIndex) {
-          queryString += ';'
-        } else {
-          queryString += ' AND\n'
-        }
+        if (!conditions[i].operator) queryString += `${conditions[i].column} = '${conditions[i].value}'`
+        else queryString += `${conditions[i].column} ${conditions[i].operator} '${conditions[i].value}'`
+        if (i === lastIndex) queryString += ';'
+        else queryString += ' AND\n'
       }
     }
     return queryString
