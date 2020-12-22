@@ -30,7 +30,6 @@ export default {
     }
   },
   methods: {
-    debouncer: function () {},
     requestDelete: function () {
       this.$emit('requestDelete')
     }

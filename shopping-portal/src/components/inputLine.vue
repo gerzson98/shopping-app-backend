@@ -67,7 +67,7 @@ export default {
   computed: {
     pushNeeded: function () {
       if (this.parent === 'addBill') return this.lineData.name !== null && this.lineData.name !== this.logicalIndicator && this.lineData.price !== null
-      else if (this.parent === 'List') return this.lineData.name !== null && this.lineData.name !== this.logicalIndicator && this.lineData.trademark !== this.logicalIndicator && this.lineData.trademark !== null
+      else if (this.parent === 'List') return this.lineData.name !== null && this.lineData.name !== this.logicalIndicator && this.lineData.quantity !== null && this.lineData.quantity !== 0
       else {
         console.log('pushNeeded is not setup for this parent in inputLine.vue.')
         return false

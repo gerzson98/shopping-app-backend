@@ -1,8 +1,10 @@
 <template>
-  <div>
-    <input id="pwIn" type="password" placeholder="Password" v-model="pw" :disabled="locked">
-    <button @click="sendCheck" :disabled="locked">Submit</button>
+  <div class="view">
+    <input id="pwIn" type="password" placeholder="Password" v-model="pw" :disabled="locked" @mouseover="hovered = true" @mouseleave="hovered = false">
+    <button @click="sendCheck" :disabled="locked" @mouseover="hovered = true" @mouseleave="hovered = false">Submit</button>
     <button @click="switchHidden">Show / Hide password text</button>
+    <br>
+    <label v-if="hovered && locked" for="pwIn">You are banned from logging in.</label>
   </div>
 </template>
 
@@ -14,6 +16,7 @@ export default {
   name: 'LogIn',
   data () {
     return {
+      hovered: false,
       locked: null,
       hidden: true,
       pw: ''
@@ -24,7 +27,6 @@ export default {
       .then(response => {
         this.locked = response.data.locked
         const remaining = response.data.until - Date.now()
-        console.log('Locked: ', this.locked, 'Remaining: ', remaining)
         setTimeout(function () {
           this.locked = false
         },
@@ -46,12 +48,13 @@ export default {
             this.$emit('loggedIn')
           } else {
             alert('Invalid password.')
+            console.log(duration)
             if (this.locked) this.lockIt(duration)
           }
         })
     },
     lockIt (time) {
-      alert('Too many invalid passwords. You\'re not gonna be able to modify pw for', time, 'sec.')
+      alert('Too many invalid passwords. You are disabled for a while.')
       if (!time) time = 30000
       else time *= 1000
       setTimeout(function () {

@@ -1,8 +1,6 @@
 <template>
   <div class="view">
-    <p>
-      Planning to buy;
-    </p>
+    <p>Planning to buy;</p>
     <div class="container">
       <bill-line v-for="(item, index) in list" :key="index" :lineData="item" :parent="'List'" @muted="item = $event" @requestDelete="delMethod(index)" />
       <input-line @pushNeeded="pushToBill" :pNames="productNames" :parent="'List'" />
@@ -73,14 +71,6 @@ export default {
       const res = await axios.get(URL.product.getAllName)
       this.productNames = res.data.sort()
       this.productNames.push('Add new')
-    }
-  },
-  watch: {
-    newLine: {
-      handler: function () {
-        this.debouncer()
-      },
-      deep: true
     }
   },
   components: {
