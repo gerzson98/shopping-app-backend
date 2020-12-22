@@ -2,7 +2,7 @@
 
 const { db } = require('../server/db')
 const { UtilFunctions } = require('./Utils')
-const { QueryFunctions } = require('./querys')
+const { QueryFunctions } = require('./Querys')
 const { ConvertFunctions } = require('./Convert')
 
 /**
@@ -136,7 +136,7 @@ class ListFunctions {
     const convert = new ConvertFunctions()
     let list = await this.getList()
     list = convert.resultToObject(list)
-    if (list !== [] && list !== undefined) {
+    if (list[0] !== undefined) {
       if (!Array.isArray(bill)) bill = [bill]
       for (let billE of bill) {
         billE = convert.fromBEtoLE(billE)

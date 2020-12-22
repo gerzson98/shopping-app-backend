@@ -39,16 +39,18 @@
   stringSimplify (string) {
     string = string.toLowerCase()
     let tmp = string.split('')
-    for (let i = 0; i < string.length; ++i) {
-      let char = tmp[i]
-      switch (char) {
+    let length = string.length
+    for (let i = 0; i < length; ++i) {
+      switch (tmp[i]) {
         case ' ':
           tmp.splice(i, 1)
           i--
+          length--
           break;
         case '\'':
           tmp.splice(i, 1)
           i--
+          length--
           break;
         default:
           break;

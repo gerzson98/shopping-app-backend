@@ -18,7 +18,7 @@
     <router-view/>
     </div>
     <div v-else>
-      <login-page :approved="approved" @loggedIn="approved = $event" />
+      <login-page :approved="approved" @loggedIn="approved = true" />
     </div>
   </div>
 </template>

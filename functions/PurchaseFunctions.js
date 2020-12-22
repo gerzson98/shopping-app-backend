@@ -2,8 +2,8 @@
 
 
 const { db } = require('../server/db');
-const { QueryFunctions } = require('./querys');
-const { UtilFunctions } = require('./utils');
+const { QueryFunctions } = require('./Querys');
+const { UtilFunctions } = require('./Utils');
 
 /**
  * @typedef PurchaseFunctions

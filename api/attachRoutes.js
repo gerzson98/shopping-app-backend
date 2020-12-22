@@ -1,8 +1,8 @@
 'use strict' 
 const { getAllProduct, deleteAllProducts, getProductsNames, getCheapest, getTrademarks } = require('./controllers/productController')
 const { addNewShopping, getAllPurchases , deleteAll, seeSpending, getFavShop} = require('./controllers/purchaseController')
-const { addList, getList, updateList } = require('./controllers/ListController')
-const { PasswordCheck } = require('./controllers/LoginController')
+const { addList, getList, updateList } = require('./controllers/listController')
+const { passwordCheck, lockedCheck } = require('./controllers/loginController')
 
 function attachRoutes(app) {
   app.get('/')
@@ -11,7 +11,8 @@ function attachRoutes(app) {
   app.get('/purchases/spent', seeSpending)
   app.get('/product/getallnames', getProductsNames)
   app.get('/list/getlist', getList)
-  app.post('/login/pwcheck', PasswordCheck)
+  app.get('/login/lock', lockedCheck)
+  app.post('/login/pwcheck', passwordCheck)
   app.post('/list/update', updateList)
   app.post('/list/addlist', addList)
   app.post('/product/gettrademarks', getTrademarks)

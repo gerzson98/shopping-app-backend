@@ -2,7 +2,7 @@
 
 
 const { db } = require('../server/db')
-const { QueryFunctions } = require('./querys')
+const { QueryFunctions } = require('./Querys')
 const { ConvertFunctions } = require('./Convert')
 
 

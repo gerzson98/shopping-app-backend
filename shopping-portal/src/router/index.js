@@ -1,18 +1,18 @@
 import Vue from 'vue'
+import App from '../App.vue'
 import Info from '../views/getInfo.vue'
 import List from '../views/shoppingList.vue'
 import AddBill from '../views/addBill.vue'
 import AddList from '../views/addList.vue'
 import VueRouter from 'vue-router'
-import LogIn from '../views/loginPage.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'LogIn',
-    component: LogIn
+    name: 'App',
+    component: App
   },
   {
     path: '/add-bill',

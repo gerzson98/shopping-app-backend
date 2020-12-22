@@ -15,7 +15,6 @@
   }
 
   /**
-   * 
    * @param {String} table 
    * @param {Array} columns 
    * @param {Array} conditions 

@@ -21,6 +21,7 @@
     "update": "http://localhost:5000/list/update"
   },
   "login": {
-    "pwcheck": "http://localhost:5000/login/pwcheck"
+    "pwcheck": "http://localhost:5000/login/pwcheck",
+    "lock": "http://localhost:5000/login/lock"
   }
 }

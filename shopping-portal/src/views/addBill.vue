@@ -1,12 +1,10 @@
 <template>
   <div class="view">
     <div>
-      <p>Shop: </p>
+      <p>Shop:</p>
       <input v-model="location" placeholder="Location" />
     </div>
-    <p>
-      Purchased stuff;
-    </p>
+    <p>Purchased stuff;</p>
     <div class="container">
       <bill-line v-for="(item, index) in bill" :key="index" :lineData="item" :parent="'addBill'" @muted="item = $event" @requestDelete="delMethod(index)" />
       <input-line @pushNeeded="pushToBill" :pNames="productNames" :parent="'addBill'" />
@@ -30,14 +28,7 @@ export default {
       inputIndicator: 'Add new',
       location: 'CBA',
       productNames: [],
-      bill: [{
-        name: 'Snickers',
-        trademark: 'Snickers',
-        unitSize: 50,
-        unitType: 'g',
-        quantity: 1,
-        price: 200
-      }]
+      bill: []
     }
   },
   async created () {
@@ -66,9 +57,6 @@ export default {
         console.log(error)
       }
     },
-    Refresh (value, index) {
-      this.bill[index] = value
-    },
     delMethod (index) {
       this.bill.splice(index, 1)
     },
@@ -85,7 +73,7 @@ export default {
     async getPNames () {
       const res = await axios.get(URL.product.getAllName)
       this.productNames = res.data.sort()
-      this.productNames.push('Add new')
+      this.productNames.push(this.inputIndicator)
     }
   },
   watch: {
