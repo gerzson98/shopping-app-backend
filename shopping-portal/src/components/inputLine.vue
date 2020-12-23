@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="row">
     <Input @muted="gotName" :options="pNames" :choice="lineData.name" placeholder="Product name" class="cell" />
     <Input @muted="gotTrademark" :options="trademarksToSend" :choice="lineData.trademark" placeholder="Trademark's name" class="cell" />
     <input v-model="lineData.unitSize" placeholder="Unit size" class="cell" />

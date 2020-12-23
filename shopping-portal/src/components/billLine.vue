@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <input v-model="lineData.name" placeholder="Product name" class="cell" />
-    <input v-model="lineData.trademark" placeholder="Trademark's name" class="cell" />
-    <input v-if="parent !== 'shoppingList'" v-model="lineData.unitSize" placeholder="Unit size" class="cell" />
-    <select v-model="lineData.unitType" class="cell">
+  <div class="billLine">
+    <input v-model="lineData.name" placeholder="Product name" class="billLine" />
+    <input v-model="lineData.trademark" placeholder="Trademark's name" class="billLine" />
+    <input v-if="parent !== 'shoppingList'" v-model="lineData.unitSize" placeholder="Unit size" class="billLine" />
+    <select v-model="lineData.unitType" class="billLine">
       <option v-for="item in types" :key="item">{{ item }}</option>
     </select>
-    <input type="number" v-model="lineData.quantity" placeholder="Pieces" class="cell" />
-    <input v-if="parent === 'addBill'" type="number" v-model="lineData.price" placeholder="Price" class="cell" />
-    <button @click="requestDelete">Del</button>
+    <input type="number" v-model="lineData.quantity" placeholder="Pieces" class="billLine" />
+    <input v-if="parent === 'addBill'" type="number" v-model="lineData.price" placeholder="Price" class="billLine" />
+    <button @click="requestDelete" class="billLine">Del</button>
   </div>
 </template>
 
