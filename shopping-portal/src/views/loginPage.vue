@@ -14,6 +14,7 @@ import URL from '../services/URL.json'
 
 export default {
   name: 'LogIn',
+  store: store,
   data () {
     return {
       hovered: false,
@@ -73,6 +74,13 @@ export default {
         const x = document.getElementById('pwIn')
         if (this.hidden) x.type = 'password'
         else x.type = 'text'
+      }
+    },
+    approved: {
+      handler: {
+        logIn () {
+          if (approved === true) this.$store.commit('logIn')
+        }
       }
     }
   },

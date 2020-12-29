@@ -28,10 +28,14 @@ import LoginPage from './views/loginPage.vue'
 
 export default {
   name: 'App',
+  store: store,
   data () {
     return {
-      approved: false
+      approved: this.$store.loggedIn
     }
+  },
+  mounted () {
+    console.log(this.$store.loggedIn)
   },
   components: {
     LoginPage
