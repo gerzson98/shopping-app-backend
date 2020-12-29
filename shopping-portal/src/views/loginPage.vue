@@ -14,7 +14,6 @@ import URL from '../services/URL.json'
 
 export default {
   name: 'LogIn',
-  store: store,
   data () {
     return {
       hovered: false,
@@ -41,23 +40,26 @@ export default {
       }
       axios.post(URL.login.pwcheck, MSG)
         .then(response => {
-          this.approved = response.data.approved
+          const { dispatch } = this.$store
+          const approved = response.data.approved
+          dispatch('LOGIN', approved)
           this.locked = response.data.locked
-          const duration = response.data.duration
-          if (this.approved) {
+          const until = response.data.until
+          if (approved) {
             alert('Succesfull login!')
             this.$emit('loggedIn')
           } else {
             alert('Invalid password.')
-            console.log(duration)
-            if (this.locked) this.lockIt(duration)
+            console.log(until)
+            if (this.locked) this.lockIt(until)
           }
         })
     },
-    lockIt (time) {
+    lockIt (until) {
       alert('Too many invalid passwords. You are disabled for a while.')
-      if (!time) time = 30000
-      else time *= 1000
+      let time
+      if (!until) time = 30000
+      else time = until - Date.now()
       setTimeout(function () {
         this.locked = false
       },
@@ -75,19 +77,6 @@ export default {
         if (this.hidden) x.type = 'password'
         else x.type = 'text'
       }
-    },
-    approved: {
-      handler: {
-        logIn () {
-          if (approved === true) this.$store.commit('logIn')
-        }
-      }
-    }
-  },
-  props: {
-    approved: {
-      type: Boolean,
-      default: false
     }
   }
 }

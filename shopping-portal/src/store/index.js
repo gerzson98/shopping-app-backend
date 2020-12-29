@@ -8,11 +8,14 @@ export default new Vuex.Store({
     loggedIn: false
   },
   mutations: {
-    logIn (state) {
-      state.loggedIn = true
+    LOG_IN (state, payLoad) {
+      state.loggedIn = payLoad
     }
   },
   actions: {
+    LOGIN ({ commit }, payLoad) {
+      commit('LOG_IN', payLoad)
+    }
   },
   modules: {
   }

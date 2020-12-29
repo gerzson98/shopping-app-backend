@@ -18,7 +18,7 @@
     <router-view/>
     </div>
     <div v-else>
-      <login-page :approved="approved" @loggedIn="approved = true" />
+      <login-page @loggedIn="approved = true" />
     </div>
   </div>
 </template>
@@ -28,14 +28,13 @@ import LoginPage from './views/loginPage.vue'
 
 export default {
   name: 'App',
-  store: store,
   data () {
     return {
-      approved: this.$store.loggedIn
+      approved: this.$store.state.loggedIn
     }
   },
   mounted () {
-    console.log(this.$store.loggedIn)
+    console.log(this.$store)
   },
   components: {
     LoginPage

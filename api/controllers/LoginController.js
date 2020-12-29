@@ -4,7 +4,7 @@ let approved = false
 let tryCounter = 0
 let locked = false
 let lockedLevel = 0
-let lockedTill
+let lockedTill = Date.now()
 
 exports.lockedCheck = function (request, response) {
   response.status(200).json({locked: locked, until: lockedTill})
@@ -33,6 +33,6 @@ exports.passwordCheck = function (request, response) {
         30000 * lockedLevel)
       }
     }
-    response.status(200).json({approved: approved, locked: locked, duration: (lockedLevel * 30)})
+    response.status(200).json({approved: approved, locked: locked, until: lockedTill})
   }
 }
