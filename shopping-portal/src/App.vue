@@ -3,19 +3,18 @@
     <div v-if="approved">
       <nav class="mainMenu">
         <div class="mainMenu">
-        <router-link class="mainMenu" :to="{ name: 'Add' }">Add another bill</router-link>
+          <router-link class="mainMenu" :to="{ name: 'Add' }">Add another bill</router-link>
         </div>
         <div class="mainMenu">
-        <router-link class="mainMenu" :to="{ name: 'Info' }">Lets see some computed data</router-link>
+          <router-link class="mainMenu" :to="{ name: 'Info' }">Lets see some computed data</router-link>
         </div>
         <div class="mainMenu">
-        <router-link class="mainMenu" :to="{ name: 'AddList' }">Add a new shopping list!</router-link>
+          <router-link class="mainMenu" :to="{ name: 'AddList' }">Add a new shopping list!</router-link>
         </div>
         <div class="mainMenu">
-        <router-link class="mainMenu" :to="{ name: 'List' }">Let's check our shopping list!</router-link>
+          <router-link class="mainMenu" :to="{ name: 'List' }">Let's check our shopping list!</router-link>
         </div>
       </nav>
-    <router-view/>
     </div>
     <div v-else>
       <login-page @loggedIn="approved = true" />
